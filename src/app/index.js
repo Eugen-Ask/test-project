@@ -1,10 +1,14 @@
 import { connect } from 'react-redux'
 
 import { App as AppComponent } from './App'
+import { changeRepoInput } from './action'
 
-export const App = connect(
-  (state) => ({ app: state.app }),
-  {
-    
-  }
-)(AppComponent)
+export function mapStateToProps(state) { 
+  return { app: state.app }
+}
+
+export const actions = {
+  changeRepoInput,
+}
+
+export const App = connect(mapStateToProps, actions)(AppComponent)
