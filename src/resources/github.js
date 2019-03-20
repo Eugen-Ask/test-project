@@ -1,20 +1,29 @@
+import parseLinkHeader from 'parse-link-header'
+
 import { axios } from '../system/axios'
 
-export function requestIssues(owner, repo, assignee) { 
-  return axios.get(`/repos/${owner}/${repo}/issues`, { params: { assignee } })
+export async function requestIssues(ownerAndRepo, assignee, page) {
+  const response = await axios.get(`/repos/${ownerAndRepo}/issues`, { params: { assignee, page } })
+  return transformGithubApiResponse(response, page)
 }
 
-export function requestAssignees(owner, repo) {
-  return axios.get(`/repos/${owner}/${repo}/assignees`)
+export async function requestAssignees(ownerAndRepo, page) {
+  const response = await axios.get(`/repos/${ownerAndRepo}/assignees`, { params: { page } })
+  return transformGithubApiResponse(response, page)
 }
 
-export async function requestRepositoryExistence(owner, repo) { 
-  try {
-    await axios.get(`/repos/${owner}/${repo}`)
-    return { data: { exists: true } }
+function transformGithubApiResponse(axiosResponse, currentPage = 1) { 
+  const { data, headers } = axiosResponse
+  const totalPages = calculateTotalPages(headers)
+  if (currentPage <= totalPages) {
+    return { data, totalPages, currentPage }
   }
-  catch (e) {
-    console.log("e.payload", e.payload)
-    return { data: { exists: false } }
-  }
+  throw new Error('Current page number can not be more that total number')
+}
+
+function calculateTotalPages(githubApiResponseHeaders) {
+  const { prev, last } = parseLinkHeader(githubApiResponseHeaders.link) || {}
+  if (last) return +last.page
+  if (prev) return +prev.page + 1
+  return 1
 }
