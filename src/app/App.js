@@ -35,6 +35,16 @@ export class App extends React.PureComponent {
     return null
   }
   
+  get assignees() {
+    const { assignees, assigneeSearchInputValue } = this.props.app
+    return assignees.data
+      .filter(_ =>
+        _.login
+          .toLowerCase()
+          .startsWith(assigneeSearchInputValue.toLowerCase())
+      )
+  }
+  
   render() {
     const { app, loading } = this.props
     return (
@@ -48,7 +58,7 @@ export class App extends React.PureComponent {
           onChange={this.onChangeSearchAssigneeInput}
         />
         <div>
-          { app.assignees.data.map(assignee =>
+          { this.assignees.map(assignee =>
             <Assignee
               key={assignee.id}
               assignee={assignee}

@@ -58,14 +58,14 @@ describe('App', () => {
 
   it('shows assignees if loaded', async () => {
     render(props => {
-      props.app.assignees.data = [{ id: 1 }, { id: 2 }, { id: 3 }]
+      props.app.assignees.data = getFakeAssignees()
     })
     expect(wrapper.find(Assignee).length).toBe(3)
   })
 
   it('shows issues if loaded', async () => {
     render(props => {
-      props.app.issues.data = [{ id: 1 }, { id: 2 }, { id: 3 }]
+      props.app.issues.data = getFakeIssues()
     })
     expect(wrapper.find(Issue).length).toBe(3)
   })
@@ -91,7 +91,7 @@ describe('App', () => {
   it('calls loadAssignees when clicking on the button "load more assignees"', () => {
     render(props => {
       props.app.assignees = {
-        data: [{ id: 1 }, { id: 2 }, { id: 3 }],
+        data: getFakeAssignees(),
         lastLoadedPage: 1,
         totalPages: 2,
       }
@@ -107,7 +107,7 @@ describe('App', () => {
   it('shows LoadMoreAssignees button if not all data is loaded', () => {
     render(props => {
       props.app.assignees = {
-        data: [{ id: 1 }, { id: 2 }, { id: 3 }],
+        data: getFakeAssignees(),
         lastLoadedPage: 1,
         totalPages: 2,
       }
@@ -122,7 +122,7 @@ describe('App', () => {
   it("triggers 'loadIssues' if not everything is loaded", () => {
     render(props => {
       props.app.issues = {
-        data: [{ id: 1 }, { id: 2 }, { id: 3 }],
+        data: getFakeIssues(),
         lastLoadedPage: 1,
         totalPages: 2,
       }
@@ -133,7 +133,7 @@ describe('App', () => {
   it("does not trigger 'loadIssues' if everything is loaded", () => {
     render(props => {
       props.app.issues = {
-        data: [{ id: 1 }, { id: 2 }, { id: 3 }],
+        data: getFakeIssues(),
         lastLoadedPage: 2,
         totalPages: 2,
       }
@@ -144,7 +144,7 @@ describe('App', () => {
   it("does not trigger 'loadIssues' if more issues are loading", () => {
     render(props => {
       props.app.issues = {
-        data: [{ id: 1 }, { id: 2 }, { id: 3 }],
+        data: getFakeIssues(),
         lastLoadedPage: 1,
         totalPages: 2,
       }
@@ -156,13 +156,29 @@ describe('App', () => {
   it("does not trigger 'loadIssues' if repository is loading", () => {
     render(props => {
       props.app.issues = {
-        data: [{ id: 1 }, { id: 2 }, { id: 3 }],
+        data: getFakeIssues(),
         lastLoadedPage: 1,
         totalPages: 2,
       }
       props.loading.loadRepository = true
     })
     expect(props.loadIssues).not.toHaveBeenCalled()
+  })
+
+  it("does not filter assignees if filter is empty", () => {
+    render(props => {
+      props.app.assigneeSearchInputValue = 'g'
+      props.app.assignees.data = getFakeAssignees()
+    })
+    expect(wrapper.find(Assignee).length).toBe(1)
+  })
+
+  it("filters assignees by their name", () => {
+    render(props => {
+      props.app.assigneeSearchInputValue = 'g'
+      props.app.assignees.data = getFakeAssignees()
+    })
+    expect(wrapper.find(Assignee).length).toBe(1)
   })
 
   function render(producer = _ => _) {
@@ -175,6 +191,21 @@ describe('App', () => {
   }
 })
 
+function getFakeAssignees() { 
+  return [
+    { id: 1, login: 'achao' },
+    { id: 2, login: 'gaearon' },
+    { id: 3, login: 'yungsters' },
+  ]
+}
+
+function getFakeIssues() {
+  return [
+    { id: 1 },
+    { id: 2 },
+    { id: 3 },
+  ]
+}
 
 function getValue(inputWrapper) { 
   return inputWrapper.props().value
