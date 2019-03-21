@@ -2,9 +2,19 @@ import '../../testing/setupTestingEnvironment'
 import React from 'react'
 import { mount } from 'enzyme'
 import produce from 'immer'
+import IntersectionObserver from '@researchgate/react-intersection-observer'
 
 import { App, Assignee, Issue, Loader, LoadMoreAssignees, RepoSearchBarInput } from '../App'
 import { initialState } from '../reducer'
+
+jest.mock('@researchgate/react-intersection-observer')
+
+IntersectionObserver.mockImplementation(
+  function({ onChange }) {
+    onChange({ isIntersecting: true })
+    return null
+  }
+)
 
 describe('App', () => {
   let props 
@@ -47,15 +57,15 @@ describe('App', () => {
   })
 
   it('shows assignees if loaded', async () => {
-    render(_ => {
-      _.app.assignees.data = [{ id: 1 }, { id: 2 }, { id: 3 }]
+    render(props => {
+      props.app.assignees.data = [{ id: 1 }, { id: 2 }, { id: 3 }]
     })
     expect(wrapper.find(Assignee).length).toBe(3)
   })
 
   it('shows issues if loaded', async () => {
-    render(_ => {
-      _.app.issues.data = [{ id: 1 }, { id: 2 }, { id: 3 }]
+    render(props => {
+      props.app.issues.data = [{ id: 1 }, { id: 2 }, { id: 3 }]
     })
     expect(wrapper.find(Issue).length).toBe(3)
   })
@@ -65,22 +75,22 @@ describe('App', () => {
   })
   
   it('shows loader if repository is loading', async () => {
-    render(_ => {
-      _.loading.loadRepository = true
+    render(props => {
+      props.loading.loadRepository = true
     })
     expect(wrapper.find(Loader).exists()).toBe(true)
   })
 
   it('shows loader if more issues are loading', async () => {
-    render(_ => {
-      _.loading.loadIssues = true
+    render(props => {
+      props.loading.loadIssues = true
     })
     expect(wrapper.find(Loader).exists()).toBe(true)
   })
 
   it('calls loadAssignees when clicking on the button "load more assignees"', () => {
-    render(_ => {
-      _.app.assignees = {
+    render(props => {
+      props.app.assignees = {
         data: [{ id: 1 }, { id: 2 }, { id: 3 }],
         lastLoadedPage: 1,
         totalPages: 2,
@@ -95,14 +105,64 @@ describe('App', () => {
   })
 
   it('shows LoadMoreAssignees button if not all data is loaded', () => {
-    render(_ => {
-      _.app.assignees = {
+    render(props => {
+      props.app.assignees = {
         data: [{ id: 1 }, { id: 2 }, { id: 3 }],
         lastLoadedPage: 1,
         totalPages: 2,
       }
     })
     expect(wrapper.find(LoadMoreAssignees).exists()).toBe(true)
+  })
+
+  it("does not trigger 'loadIssues' if issues if data still not loaded", () => {
+    expect(props.loadIssues).not.toHaveBeenCalled()
+  })
+  
+  it("triggers 'loadIssues' if not everything is loaded", () => {
+    render(props => {
+      props.app.issues = {
+        data: [{ id: 1 }, { id: 2 }, { id: 3 }],
+        lastLoadedPage: 1,
+        totalPages: 2,
+      }
+    })
+    expect(props.loadIssues).toHaveBeenCalled()
+  })
+
+  it("does not trigger 'loadIssues' if everything is loaded", () => {
+    render(props => {
+      props.app.issues = {
+        data: [{ id: 1 }, { id: 2 }, { id: 3 }],
+        lastLoadedPage: 2,
+        totalPages: 2,
+      }
+    })
+    expect(props.loadIssues).not.toHaveBeenCalled()
+  })
+  
+  it("does not trigger 'loadIssues' if more issues are loading", () => {
+    render(props => {
+      props.app.issues = {
+        data: [{ id: 1 }, { id: 2 }, { id: 3 }],
+        lastLoadedPage: 1,
+        totalPages: 2,
+      }
+      props.loading.loadIssues = true
+    })
+    expect(props.loadIssues).not.toHaveBeenCalled()
+  })
+  
+  it("does not trigger 'loadIssues' if repository is loading", () => {
+    render(props => {
+      props.app.issues = {
+        data: [{ id: 1 }, { id: 2 }, { id: 3 }],
+        lastLoadedPage: 1,
+        totalPages: 2,
+      }
+      props.loading.loadRepository = true
+    })
+    expect(props.loadIssues).not.toHaveBeenCalled()
   })
 
   function render(producer = _ => _) {
@@ -123,3 +183,4 @@ function getValue(inputWrapper) {
 function changeInput(inputWrapper, value) {
   inputWrapper.simulate('change', { target: { value } })
 }
+

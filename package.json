@@ -5,9 +5,11 @@
   "dependencies": {
     "@emotion/core": "^10.0.9",
     "@emotion/styled": "^10.0.9",
+    "@researchgate/react-intersection-observer": "^0.7.4",
     "axios": "^0.18.0",
     "enzyme": "^3.9.0",
     "enzyme-adapter-react-16": "^1.11.2",
+    "intersection-observer": "^0.5.1",
     "lodash": "^4.17.11",
     "normalize.css": "^8.0.1",
     "parse-link-header": "^1.0.1",

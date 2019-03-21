@@ -1,6 +1,7 @@
 import React from 'react'
 import emotion from '@emotion/styled/macro'
 import debounce from 'lodash/debounce'
+import IntersectionObserver from '@researchgate/react-intersection-observer'
 
 export class App extends React.PureComponent {
   onChange = (e) => {
@@ -9,6 +10,26 @@ export class App extends React.PureComponent {
   }
 
   loadRepository = debounce(this.props.loadRepository, 500)
+
+  LoadMoreIssuesTrigger = () => {
+    const { app, loading } = this.props
+    if (
+      app.issues.data.length > 0 
+      && app.issues.lastLoadedPage < app.issues.totalPages
+      && !loading.loadIssues
+      && !loading.loadRepository
+    ){
+      return (
+        <IntersectionObserver
+          children={<div/>}
+          onChange={({ isIntersecting }) => {
+            if (isIntersecting) this.props.loadIssues()
+          }}
+        />
+      )
+    }
+    return null
+  }
   
   render() {
     const { app, loading } = this.props
@@ -29,7 +50,9 @@ export class App extends React.PureComponent {
           )}
           { app.assignees.data.length > 0 &&
             app.assignees.lastLoadedPage < app.assignees.totalPages &&
-            <LoadMoreAssignees onClick={this.props.loadAssignees}/>
+            <LoadMoreAssignees onClick={this.props.loadAssignees}>
+              <b>More</b>
+            </LoadMoreAssignees>
           }
         </div>
         <div>
@@ -42,6 +65,7 @@ export class App extends React.PureComponent {
             </Issue>
           )}
         </div>
+        <this.LoadMoreIssuesTrigger/>
         { (loading.loadRepository || loading.loadIssues) &&
           <Loader>Loading</Loader>
         }
