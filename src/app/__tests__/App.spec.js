@@ -5,7 +5,7 @@ import { compose } from 'redux'
 import { connect, Provider } from 'react-redux'
 
 import { mapStateToProps, actions } from '../'
-import { App, Assignee, RepoSearchBarInput } from '../App'
+import { App, Assignee, Issue, RepoSearchBarInput } from '../App'
 import { createStore } from '../../system/store'
 import { withActionLoadingIndicators } from '../../lib/withActionLoadingIndicators'
 
@@ -50,6 +50,13 @@ describe('App', () => {
     await store.dispatch(actions.loadRepository())
     wrapper.update()
     expect(wrapper.find(Assignee).length).toBe(30)
+  })
+
+  it('shows loaded issues', async () => {
+    store.dispatch(actions.changeRepoInput('facebook/react'))
+    await store.dispatch(actions.loadRepository())
+    wrapper.update()
+    expect(wrapper.find(Issue).length).toBe(30)
   })
   
   function render(changedActions = {}) {

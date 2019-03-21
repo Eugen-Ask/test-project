@@ -18,12 +18,22 @@ export class App extends React.PureComponent {
           value={app.repoSearchBarValue}
           onChange={this.onChange}
         />
-        { app.assignees.data.map(assignee =>
-          <Assignee
-            key={assignee.id}
-            assignee={assignee}
-          />
-        )}
+        <div>
+          { app.assignees.data.map(assignee =>
+            <Assignee
+              key={assignee.id}
+              assignee={assignee}
+            />
+          )}
+        </div>
+        <div>
+          { app.issues.data.map(issue =>
+            <Issue
+              key={issue.id}
+              issue={issue}
+            />
+          )}
+        </div>
       </div>
     )
   }
@@ -34,5 +44,9 @@ export const RepoSearchBarInput = emotion.input`
 `
 
 export const Assignee = emotion.div`
+  
+`
+
+export const Issue = emotion.div`
   
 `
