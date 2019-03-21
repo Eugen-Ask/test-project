@@ -3,6 +3,7 @@ import { createAction } from 'redux-act'
 import { requestAssignees, requestIssues } from '../resources/github'
 
 export const changeRepoInput = createAction('App:changeRepoInput')
+export const changeAssigneeSearchInput = createAction('App:changeAssigneeSearchInput')
 export const assigneesHasLoaded = createAction('App:assigneesHasLoaded')
 export const issuesHasLoaded = createAction('App:issuesHasLoaded')
 export const clearLoadedData = createAction('App:clearLoadedData')

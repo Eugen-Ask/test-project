@@ -2,7 +2,7 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 
 import { App as AppComponent } from './App'
-import { changeRepoInput, loadRepository, loadAssignees, loadIssues } from './action'
+import { changeRepoInput, changeAssigneeSearchInput, loadRepository, loadAssignees, loadIssues } from './action'
 import { withActionLoadingIndicators } from '../lib/withActionLoadingIndicators'
 
 export function mapStateToProps(state) { 
@@ -11,6 +11,7 @@ export function mapStateToProps(state) {
 
 export const actions = {
   changeRepoInput,
+  changeAssigneeSearchInput,
   loadRepository,
   loadAssignees,
   loadIssues,

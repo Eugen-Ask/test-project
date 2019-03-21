@@ -4,9 +4,13 @@ import debounce from 'lodash/debounce'
 import IntersectionObserver from '@researchgate/react-intersection-observer'
 
 export class App extends React.PureComponent {
-  onChange = (e) => {
+  onChangeRepoSearchBar = (e) => {
     this.props.changeRepoInput(e.target.value)
     this.loadRepository()
+  }
+
+  onChangeSearchAssigneeInput = (e) => {
+    this.props.changeAssigneeSearchInput(e.target.value)
   }
 
   loadRepository = debounce(this.props.loadRepository, 500)
@@ -37,7 +41,11 @@ export class App extends React.PureComponent {
       <div>
         <RepoSearchBarInput
           value={app.repoSearchBarValue}
-          onChange={this.onChange}
+          onChange={this.onChangeRepoSearchBar}
+        />
+        <SearchAssigneesInput
+          value={app.assigneeSearchInputValue}
+          onChange={this.onChangeSearchAssigneeInput}
         />
         <div>
           { app.assignees.data.map(assignee =>
@@ -75,6 +83,10 @@ export class App extends React.PureComponent {
 }
 
 export const RepoSearchBarInput = emotion.input`
+  
+`
+
+export const SearchAssigneesInput = emotion.input`
   
 `
 
