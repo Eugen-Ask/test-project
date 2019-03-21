@@ -8,8 +8,10 @@ export const issuesHasLoaded = createAction('App:issuesHasLoaded')
 
 export const loadRepository = () => async (dispatch, getState) => {
   const { app } = getState()
-  await dispatch(loadAssignees(app.repoSearchBarValue))
-  await dispatch(loadIssues(app.repoSearchBarValue))
+  return await Promise.all([
+    dispatch(loadAssignees(app.repoSearchBarValue)),
+    dispatch(loadIssues(app.repoSearchBarValue)),
+  ])
 }
 
 export const loadAssignees = (ownerAndRepo) => async (dispatch, getState) => {
