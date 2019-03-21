@@ -2,7 +2,7 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 
 import { App as AppComponent } from './App'
-import { changeRepoInput, loadRepository } from './action'
+import { changeRepoInput, loadRepository, loadAssignees, loadIssues } from './action'
 import { withActionLoadingIndicators } from '../lib/withActionLoadingIndicators'
 
 export function mapStateToProps(state) { 
@@ -12,11 +12,16 @@ export function mapStateToProps(state) {
 export const actions = {
   changeRepoInput,
   loadRepository,
+  loadAssignees,
+  loadIssues,
 }
 
 const enhance = compose(
   connect(mapStateToProps, actions),
-  withActionLoadingIndicators(props => ({ loadRepository: props.loadRepository })),
+  withActionLoadingIndicators(props => ({ 
+    loadRepository: props.loadRepository,
+    loadIssues: props.loadIssues,
+  })),
 )
 
 export const App = enhance(AppComponent)

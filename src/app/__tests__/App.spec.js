@@ -1,20 +1,23 @@
 import '../../testing/setupTestingEnvironment'
 import React from 'react'
 import { mount } from 'enzyme'
-import { compose } from 'redux'
-import { connect, Provider } from 'react-redux'
 
-import { mapStateToProps, actions } from '../'
-import { App, Assignee, Issue, Loader, RepoSearchBarInput } from '../App'
-import { createStore } from '../../system/store'
-import { withActionLoadingIndicators } from '../../lib/withActionLoadingIndicators'
+import { App, Assignee, Issue, Loader, LoadMoreAssignees, RepoSearchBarInput } from '../App'
+import { initialState } from '../reducer'
 
 describe('App', () => {
-  let store
+  let props 
   let wrapper
   
   beforeEach(() => {
-    store = createStore()
+    props = {
+      app: initialState,
+      changeRepoInput: jest.fn(),
+      loadRepository: jest.fn(),
+      loadIssues: jest.fn(),
+      loadAssignees: jest.fn(),
+      loading: {}
+    }
     render()
   })
   
@@ -25,59 +28,58 @@ describe('App', () => {
   
   it('renders without crashing', () => {})
   
-  it ('changes repo search bar', () => {
+  it('calls "changeRepoInput" when changing repo input', () => {
     changeInput($repoInput(), 'facebook/react')
-    expect(getValue($repoInput())).toBe('facebook/react')
+    expect(props.changeRepoInput).toHaveBeenCalledWith('facebook/react')
   })
 
-  it ('loads repository data on 500 ms after last change of RepoSearchBarInput', () => {
-    const loadRepository = jest.spyOn(actions, 'loadRepository')
-    render({ loadRepository })
-    
+  it ('calls "loadRepository" on 500 ms after last change of repo input', () => {
     changeInput($repoInput(), 'facebook/react')
-    
-    expect(loadRepository).not.toHaveBeenCalled()
+
+    expect(props.loadRepository).not.toHaveBeenCalled()
 
     jest.advanceTimersByTime(499)
-    expect(loadRepository).not.toHaveBeenCalled()
-    
+    expect(props.loadRepository).not.toHaveBeenCalled()
+
     jest.advanceTimersByTime(500)
-    expect(loadRepository).toHaveBeenCalled()
+    expect(props.loadRepository).toHaveBeenCalled()
   })
 
-  it('shows loaded assignees', async () => {
-    store.dispatch(actions.changeRepoInput('facebook/react'))
-    await store.dispatch(actions.loadRepository())
-    wrapper.update()
-    expect(wrapper.find(Assignee).length).toBe(30)
+  it('shows assignees if loaded', async () => {
+    props.app.assignees.data = [{ id: 1 }, { id: 2 }, { id: 3 }]
+    render()
+    expect(wrapper.find(Assignee).length).toBe(3)
   })
 
-  it('shows loaded issues', async () => {
-    store.dispatch(actions.changeRepoInput('facebook/react'))
-    await store.dispatch(actions.loadRepository())
-    wrapper.update()
-    expect(wrapper.find(Issue).length).toBe(30)
+  it('shows issues if loaded', async () => {
+    props.app.issues.data = [{ id: 1 }, { id: 2 }, { id: 3 }]
+    render()
+    expect(wrapper.find(Issue).length).toBe(3)
   })
 
-  it('shows loader when loading repository', async () => {
-    changeInput($repoInput(), 'facebook/react')
-    expect(wrapper.find(Loader).length).toBe(0)
-    jest.advanceTimersByTime(500)
-    wrapper.update()
-    expect(wrapper.find(Loader).length).toBe(1)
+  it('does not show loader if nothing is loading', async () => {
+    expect(wrapper.find(Loader).exists()).toBe(false)
   })
   
-  function render(changedActions = {}) {
-    const enhance = compose(
-      connect(mapStateToProps, { ...actions, ...changedActions }),
-      withActionLoadingIndicators(props => ({ loadRepository: props.loadRepository })),
-    )
-    const ConnectedApp = enhance(App)
-    wrapper = mount(
-      <Provider store={store}>
-        <ConnectedApp/>
-      </Provider>
-    )
+  it('shows loader if repository is loading', async () => {
+    props.loading.loadRepository = true
+    render()
+    expect(wrapper.find(Loader).exists()).toBe(true)
+  })
+
+  it('shows loader if more issues are loading', async () => {
+    props.loading.loadIssues = true
+    render()
+    expect(wrapper.find(Loader).exists()).toBe(true)
+  })
+
+  it('calls loadAssignees when clicking on the button "load more assignees"', () => {
+    wrapper.find(LoadMoreAssignees).simulate('click')
+    expect(props.loadAssignees).toHaveBeenCalled()
+  })
+
+  function render() {
+    wrapper = mount(<App {...props}/>)
   }
   
   function $repoInput() {

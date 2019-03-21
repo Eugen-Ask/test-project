@@ -23,19 +23,24 @@ export class App extends React.PureComponent {
             <Assignee
               key={assignee.id}
               assignee={assignee}
-            />
+            >
+              { assignee.login }
+            </Assignee>
           )}
+          <LoadMoreAssignees onClick={this.props.loadAssignees}/>
         </div>
         <div>
           { app.issues.data.map(issue =>
             <Issue
               key={issue.id}
               issue={issue}
-            />
+            >
+              {issue.title}
+            </Issue>
           )}
         </div>
-        { loading.loadRepository &&
-          <Loader/>
+        { (loading.loadRepository || loading.loadIssues) &&
+          <Loader>Loading</Loader>
         }
       </div>
     )
@@ -47,6 +52,10 @@ export const RepoSearchBarInput = emotion.input`
 `
 
 export const Assignee = emotion.div`
+  
+`
+
+export const LoadMoreAssignees = emotion.div`
   
 `
 

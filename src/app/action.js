@@ -10,10 +10,8 @@ export const clearLoadedData = createAction('App:clearLoadedData')
 export const loadRepository = () => async (dispatch, getState) => {
   const { app } = getState()
   dispatch(clearLoadedData())
-  return await Promise.all([
-    dispatch(loadAssignees(app.repoSearchBarValue)),
-    dispatch(loadIssues(app.repoSearchBarValue)),
-  ])
+  dispatch(loadAssignees(app.repoSearchBarValue))
+  return await dispatch(loadIssues(app.repoSearchBarValue))
 }
 
 export const loadAssignees = () => async (dispatch, getState) => {

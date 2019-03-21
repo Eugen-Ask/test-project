@@ -3,7 +3,7 @@ import produce from 'immer'
 
 import { assigneesHasLoaded, changeRepoInput, clearLoadedData, issuesHasLoaded } from './action'
 
-const initialState = {
+export const initialState = {
   repoSearchBarValue: '',
   assignees: {
     data: [],
