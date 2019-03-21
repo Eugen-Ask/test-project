@@ -5,9 +5,11 @@ import { requestAssignees, requestIssues } from '../resources/github'
 export const changeRepoInput = createAction('App:changeRepoInput')
 export const assigneesHasLoaded = createAction('App:assigneesHasLoaded')
 export const issuesHasLoaded = createAction('App:issuesHasLoaded')
+export const clearLoadedData = createAction('App:clearLoadedData')
 
 export const loadRepository = () => async (dispatch, getState) => {
   const { app } = getState()
+  dispatch(clearLoadedData())
   return await Promise.all([
     dispatch(loadAssignees(app.repoSearchBarValue)),
     dispatch(loadIssues(app.repoSearchBarValue)),

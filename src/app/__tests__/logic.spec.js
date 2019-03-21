@@ -23,6 +23,14 @@ describe('Business logic', () => {
       await store.dispatch(actions.loadRepository())
       expect(requestIssues).toHaveBeenCalled()
     })
+    
+    it('clears loaded data on new call', async () => {
+      await store.dispatch(actions.loadRepository())
+      await store.dispatch(actions.loadRepository())
+      const { app } = store.getState()
+      expect(app.assignees.data.length).toBe(3)
+      expect(app.issues.data.length).toBe(3)
+    })
   })
   
   describe('Assignees loading', () => {

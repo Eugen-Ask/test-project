@@ -1,7 +1,7 @@
 import { createReducer } from 'redux-act'
 import produce from 'immer'
 
-import { assigneesHasLoaded, changeRepoInput, issuesHasLoaded } from './action'
+import { assigneesHasLoaded, changeRepoInput, clearLoadedData, issuesHasLoaded } from './action'
 
 const initialState = {
   repoSearchBarValue: '',
@@ -32,5 +32,9 @@ export const appReducer = createReducer({
     state.issues.data.push(...data)
     state.issues.lastLoadedPage = currentPage
     state.issues.totalPages = totalPages
+  }),
+  [clearLoadedData]: produce((state) => {
+    state.assignees = initialState.assignees
+    state.issues = initialState.issues
   }),
 }, initialState)
