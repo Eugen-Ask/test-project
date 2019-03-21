@@ -1,4 +1,4 @@
-import '../../system/setupTestingEnvironment'
+import '../../testing/setupTestingEnvironment'
 import React from 'react'
 import { mount } from 'enzyme'
 import { connect, Provider } from 'react-redux'

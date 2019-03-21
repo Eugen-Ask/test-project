@@ -1,4 +1,4 @@
-import '../../system/setupTestingEnvironment'
+import '../../testing/setupTestingEnvironment'
 
 import * as actions from '../action'
 import { createStore } from '../../system/store'

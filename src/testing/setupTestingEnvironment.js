@@ -2,7 +2,7 @@ import { configure } from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16'
 import debouce from 'lodash/debounce'
 
-import '../testing/mocks/axios'
+import './mocks/axios'
 
 configure({ adapter: new Adapter() })
 
