@@ -12,12 +12,14 @@ export const loadRepository = () => async (dispatch, getState) => {
   await dispatch(loadIssues(app.repoSearchBarValue))
 }
 
-export const loadAssignees = (ownerAndRepo, page) => async (dispatch, getState) => {
-  const response = await requestAssignees(ownerAndRepo, page)
+export const loadAssignees = (ownerAndRepo) => async (dispatch, getState) => {
+  const { lastLoadedPage = 0 } = getState().app.assignees
+  const response = await requestAssignees(ownerAndRepo, lastLoadedPage + 1)
   dispatch(assigneesHasLoaded(response))
 }
 
-export const loadIssues = (ownerAndRepo, assignee, page) => async (dispatch, getState) => {
-  const response = await requestIssues(ownerAndRepo, assignee, page)
+export const loadIssues = (ownerAndRepo, assignee) => async (dispatch, getState) => {
+  const { lastLoadedPage = 0 } = getState().app.issues
+  const response = await requestIssues(ownerAndRepo, assignee, lastLoadedPage + 1)
   dispatch(issuesHasLoaded(response))
 }
