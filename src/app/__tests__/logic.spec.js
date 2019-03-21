@@ -9,6 +9,7 @@ describe('Business logic', () => {
   
   beforeEach(() => {
     store = createStore()
+    store.dispatch(actions.changeRepoInput('facebook/react'))
   })
 
   describe('Repository loading', () => {
@@ -28,8 +29,8 @@ describe('Business logic', () => {
       await store.dispatch(actions.loadRepository())
       await store.dispatch(actions.loadRepository())
       const { app } = store.getState()
-      expect(app.assignees.data.length).toBe(3)
-      expect(app.issues.data.length).toBe(3)
+      expect(app.assignees.data.length).toBe(30)
+      expect(app.issues.data.length).toBe(30)
     })
   })
   
@@ -37,7 +38,7 @@ describe('Business logic', () => {
     it('loads assignees', async () => {
       await store.dispatch(actions.loadAssignees())
       const { app } = store.getState()
-      expect(app.assignees.data.length).toBe(3)
+      expect(app.assignees.data.length).toBe(30)
       expect(app.assignees.lastLoadedPage).toBe(1)
       expect(app.assignees.totalPages).toBe(20)
     })
@@ -45,7 +46,7 @@ describe('Business logic', () => {
       await store.dispatch(actions.loadAssignees())
       await store.dispatch(actions.loadAssignees())
       const { app } = store.getState()
-      expect(app.assignees.data.length).toBe(6)
+      expect(app.assignees.data.length).toBe(60)
       expect(app.assignees.lastLoadedPage).toBe(2)
     })
   })
@@ -54,7 +55,7 @@ describe('Business logic', () => {
     it('loads issues', async () => {
       await store.dispatch(actions.loadIssues())
       const { app } = store.getState()
-      expect(app.issues.data.length).toBe(3)
+      expect(app.issues.data.length).toBe(30)
       expect(app.issues.lastLoadedPage).toBe(1)
       expect(app.issues.totalPages).toBe(20)
     })
@@ -62,23 +63,8 @@ describe('Business logic', () => {
       await store.dispatch(actions.loadIssues())
       await store.dispatch(actions.loadIssues())
       const { app } = store.getState()
-      expect(app.issues.data.length).toBe(6)
+      expect(app.issues.data.length).toBe(60)
       expect(app.issues.lastLoadedPage).toBe(2)
     })
   })
 })
-
-jest.mock('axios', () => ({
-  create: () => ({
-    async get(path, params) {
-      return await {
-        data: [{}, {}, {}],
-        headers: {
-          link: `
-            <https://api.github.com/repositories/10270250/issues?page=19>; rel="prev", 
-          `
-        }
-      }
-    }
-  }),
-}))
