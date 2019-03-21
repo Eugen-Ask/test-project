@@ -2,9 +2,7 @@ import '../../system/setupTestingEnvironment'
 
 import * as actions from '../action'
 import { createStore } from '../../system/store'
-import { requestAssignees } from '../../resources/github'
-
-jest.mock('../../resources/github')
+import * as githubApiRequests from '../../resources/github'
 
 describe('Business logic', () => {
   let store
@@ -15,28 +13,50 @@ describe('Business logic', () => {
 
   describe('Repository loading', () => {
     it('calls loading assignees', async () => {
-      requestAssignees.mockResolvedValue({
-        data: [],
-      });
-      
+      const requestAssignees = jest.spyOn(githubApiRequests, 'requestAssignees')
       await store.dispatch(actions.loadRepository())
       expect(requestAssignees).toHaveBeenCalled()
+    })
+
+    it('calls loading issues', async () => {
+      const requestIssues = jest.spyOn(githubApiRequests, 'requestAssignees')
+      await store.dispatch(actions.loadRepository())
+      expect(requestIssues).toHaveBeenCalled()
     })
   })
   
   describe('Assignees loading', () => {
     it('loads assignees', async () => {
-      requestAssignees.mockResolvedValue({
-        data: [{}, {}, {}],
-        currentPage: 777,
-        totalPages: 888,
-      });
-      
       await store.dispatch(actions.loadAssignees())
       const { app } = store.getState()
       expect(app.assignees.data.length).toBe(3)
-      expect(app.assignees.lastLoadedPage).toBe(777)
-      expect(app.assignees.totalPages).toBe(888)
+      expect(app.assignees.lastLoadedPage).toBe(1)
+      expect(app.assignees.totalPages).toBe(20)
+    })
+  })
+
+  describe('Issues loading', () => {
+    it('loads issues', async () => {
+      await store.dispatch(actions.loadIssues())
+      const { app } = store.getState()
+      expect(app.issues.data.length).toBe(3)
+      expect(app.issues.lastLoadedPage).toBe(1)
+      expect(app.issues.totalPages).toBe(20)
     })
   })
 })
+
+jest.mock('axios', () => ({
+  create: () => ({
+    async get(path, params) {
+      return await {
+        data: [{}, {}, {}],
+        headers: {
+          link: `
+            <https://api.github.com/repositories/10270250/issues?page=19>; rel="prev", 
+          `
+        }
+      }
+    }
+  }),
+}))
