@@ -5,7 +5,7 @@ import { compose } from 'redux'
 import { connect, Provider } from 'react-redux'
 
 import { mapStateToProps, actions } from '../'
-import { App, RepoSearchBarInput } from '../App'
+import { App, Assignee, RepoSearchBarInput } from '../App'
 import { createStore } from '../../system/store'
 import { withActionLoadingIndicators } from '../../lib/withActionLoadingIndicators'
 
@@ -43,6 +43,13 @@ describe('App', () => {
     
     jest.advanceTimersByTime(500)
     expect(loadRepository).toHaveBeenCalled()
+  })
+
+  it('shows loaded assignees', async () => {
+    store.dispatch(actions.changeRepoInput('facebook/react'))
+    await store.dispatch(actions.loadRepository())
+    wrapper.update()
+    expect(wrapper.find(Assignee).length).toBe(30)
   })
   
   function render(changedActions = {}) {
