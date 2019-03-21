@@ -18,6 +18,9 @@ jest.mock('axios', () => {
             }
           }
         }
+        const error = new Error('')
+        error.response = { status: 404 }
+        throw error
       }
     }),
   })

@@ -7,6 +7,7 @@ export const changeAssigneeSearchInput = createAction('App:changeAssigneeSearchI
 export const assigneesHasLoaded = createAction('App:assigneesHasLoaded')
 export const issuesHasLoaded = createAction('App:issuesHasLoaded')
 export const clearLoadedData = createAction('App:clearLoadedData')
+export const issuesLoadingFailed = createAction('App:issuesLoadingFailed')
 
 export const loadRepository = () => async (dispatch, getState) => {
   const { app } = getState()
@@ -17,8 +18,15 @@ export const loadRepository = () => async (dispatch, getState) => {
 
 export const loadAssignees = () => async (dispatch, getState) => {
   const { repoSearchBarValue, assignees: { lastLoadedPage = 0 } } = getState().app
-  const response = await requestAssignees(repoSearchBarValue, lastLoadedPage + 1)
-  dispatch(assigneesHasLoaded(response))
+  try {
+    const response = await requestAssignees(repoSearchBarValue, lastLoadedPage + 1)
+    dispatch(assigneesHasLoaded(response))
+  } catch (e) {
+    const message = e.response.status === 404
+      ? 'This repository is not found'
+      : 'Something went wrong'
+    dispatch(issuesLoadingFailed(message))
+  }
 }
 
 export const loadIssues = () => async (dispatch, getState) => {

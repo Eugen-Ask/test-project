@@ -32,6 +32,27 @@ describe('Business logic', () => {
       expect(app.assignees.data.length).toBe(30)
       expect(app.issues.data.length).toBe(30)
     })
+
+    it('saves error message if error occurs while issues loading', async () => {
+      store.dispatch(actions.changeRepoInput('invalid/repo'))
+      try {
+        await store.dispatch(actions.loadRepository())
+      } catch (e) {}
+      const { app } = store.getState()
+      expect(app.loadingError).toBe('This repository is not found')
+    })
+
+    it('removes loaded issues if error occurs while loading issues', async () => {
+      await store.dispatch(actions.loadRepository())
+      let state = store.getState()
+      expect(state.app.issues.data.length).toBe(30)
+      store.dispatch(actions.changeRepoInput('invalid/repo'))
+      try {
+        await store.dispatch(actions.loadRepository())
+      } catch (e) {}
+      state = store.getState()
+      expect(state.app.issues.data.length).toBe(0)
+    })
   })
   
   describe('Assignees loading', () => {

@@ -57,6 +57,11 @@ export class App extends React.PureComponent {
           value={app.assigneeSearchInputValue}
           onChange={this.onChangeSearchAssigneeInput}
         />
+        { app.loadingError &&
+          <Error>
+            { app.loadingError }
+          </Error>
+        }
         <div>
           { this.assignees.map(assignee =>
             <Assignee
@@ -114,4 +119,8 @@ export const Issue = emotion.div`
 
 export const Loader = emotion.div`
   
+`
+
+export const Error = emotion.div`
+  color: red;
 `

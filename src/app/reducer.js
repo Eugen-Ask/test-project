@@ -6,12 +6,14 @@ import {
   changeAssigneeSearchInput,
   changeRepoInput,
   clearLoadedData,
-  issuesHasLoaded
+  issuesHasLoaded,
+  issuesLoadingFailed,
 } from './action'
 
 export const initialState = {
   repoSearchBarValue: '',
   assigneeSearchInputValue: '',
+  loadingError: '',
   assignees: {
     data: [],
     lastLoadedPage: undefined,
@@ -46,5 +48,11 @@ export const appReducer = createReducer({
   [clearLoadedData]: produce((state) => {
     state.assignees = initialState.assignees
     state.issues = initialState.issues
+    state.loadingError = initialState.loadingError
+    state.assigneeSearchInputValue = initialState.assigneeSearchInputValue
+  }),
+  [issuesLoadingFailed]: produce((state, payload) => {
+    state.assignees.data = []
+    state.loadingError = payload
   }),
 }, initialState)
