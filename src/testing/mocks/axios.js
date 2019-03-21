@@ -2,15 +2,9 @@ jest.mock('axios', () => {
   return ({
     create: () => ({
       get(path, {params: {assignee, page = 1}}) {
-        return {
-          data: Array(30).fill({}),
-          headers: {
-            link: githubResponseLinksMock(page, 20)
-          }
-        }
         if (path === `/repos/facebook/react/issues`) {
           return {
-            data: Array(30).fill({}),
+            data: Array.from(Array(30), issueFake),
             headers: {
               link: githubResponseLinksMock(page, 20)
             }
@@ -18,7 +12,7 @@ jest.mock('axios', () => {
         }
         if (path === `/repos/facebook/react/assignees`) {
           return {
-            data: Array(30).fill({}),
+            data: Array.from(Array(30), assigneeFake),
             headers: {
               link: githubResponseLinksMock(page, 2)
             }
@@ -27,6 +21,20 @@ jest.mock('axios', () => {
       }
     }),
   })
+  
+  function issueFake() {
+    issueFake.lastId = issueFake.lastId 
+      ? issueFake.lastId + 1 
+      : 1
+    return { id: issueFake.lastId } 
+  }
+
+  function assigneeFake() {
+    assigneeFake.lastId = assigneeFake.lastId
+      ? assigneeFake.lastId + 1
+      : 1
+    return { id: assigneeFake.lastId }
+  }
 
   function githubResponseLinksMock(currentPage, lastPage) {
     const links = []

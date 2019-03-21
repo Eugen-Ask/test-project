@@ -40,7 +40,7 @@ describe('Business logic', () => {
       const { app } = store.getState()
       expect(app.assignees.data.length).toBe(30)
       expect(app.assignees.lastLoadedPage).toBe(1)
-      expect(app.assignees.totalPages).toBe(20)
+      expect(app.assignees.totalPages).toBe(2)
     })
     it('loads more assignees if previous result is not cleared', async () => {
       await store.dispatch(actions.loadAssignees())
