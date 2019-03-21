@@ -1,6 +1,7 @@
 import '../../testing/setupTestingEnvironment'
 import React from 'react'
 import { mount } from 'enzyme'
+import produce from 'immer'
 
 import { App, Assignee, Issue, Loader, LoadMoreAssignees, RepoSearchBarInput } from '../App'
 import { initialState } from '../reducer'
@@ -46,14 +47,16 @@ describe('App', () => {
   })
 
   it('shows assignees if loaded', async () => {
-    props.app.assignees.data = [{ id: 1 }, { id: 2 }, { id: 3 }]
-    render()
+    render(_ => {
+      _.app.assignees.data = [{ id: 1 }, { id: 2 }, { id: 3 }]
+    })
     expect(wrapper.find(Assignee).length).toBe(3)
   })
 
   it('shows issues if loaded', async () => {
-    props.app.issues.data = [{ id: 1 }, { id: 2 }, { id: 3 }]
-    render()
+    render(_ => {
+      _.app.issues.data = [{ id: 1 }, { id: 2 }, { id: 3 }]
+    })
     expect(wrapper.find(Issue).length).toBe(3)
   })
 
@@ -62,23 +65,48 @@ describe('App', () => {
   })
   
   it('shows loader if repository is loading', async () => {
-    props.loading.loadRepository = true
-    render()
+    render(_ => {
+      _.loading.loadRepository = true
+    })
     expect(wrapper.find(Loader).exists()).toBe(true)
   })
 
   it('shows loader if more issues are loading', async () => {
-    props.loading.loadIssues = true
-    render()
+    render(_ => {
+      _.loading.loadIssues = true
+    })
     expect(wrapper.find(Loader).exists()).toBe(true)
   })
 
   it('calls loadAssignees when clicking on the button "load more assignees"', () => {
+    render(_ => {
+      _.app.assignees = {
+        data: [{ id: 1 }, { id: 2 }, { id: 3 }],
+        lastLoadedPage: 1,
+        totalPages: 2,
+      }
+    })
     wrapper.find(LoadMoreAssignees).simulate('click')
     expect(props.loadAssignees).toHaveBeenCalled()
   })
 
-  function render() {
+  it('does not show LoadMoreAssignees button if no assignees loaded', () => {
+    expect(wrapper.find(LoadMoreAssignees).exists()).toBe(false)
+  })
+
+  it('shows LoadMoreAssignees button if not all data is loaded', () => {
+    render(_ => {
+      _.app.assignees = {
+        data: [{ id: 1 }, { id: 2 }, { id: 3 }],
+        lastLoadedPage: 1,
+        totalPages: 2,
+      }
+    })
+    expect(wrapper.find(LoadMoreAssignees).exists()).toBe(true)
+  })
+
+  function render(producer = _ => _) {
+    props = produce(props, producer)
     wrapper = mount(<App {...props}/>)
   }
   

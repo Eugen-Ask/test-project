@@ -27,7 +27,10 @@ export class App extends React.PureComponent {
               { assignee.login }
             </Assignee>
           )}
-          <LoadMoreAssignees onClick={this.props.loadAssignees}/>
+          { app.assignees.data.length > 0 &&
+            app.assignees.lastLoadedPage < app.assignees.totalPages &&
+            <LoadMoreAssignees onClick={this.props.loadAssignees}/>
+          }
         </div>
         <div>
           { app.issues.data.map(issue =>
