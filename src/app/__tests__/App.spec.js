@@ -1,11 +1,13 @@
 import '../../testing/setupTestingEnvironment'
 import React from 'react'
 import { mount } from 'enzyme'
+import { compose } from 'redux'
 import { connect, Provider } from 'react-redux'
 
 import { mapStateToProps, actions } from '../'
 import { App, RepoSearchBarInput } from '../App'
 import { createStore } from '../../system/store'
+import { withActionLoadingIndicators } from '../../lib/withActionLoadingIndicators'
 
 describe('App', () => {
   let store
@@ -44,10 +46,11 @@ describe('App', () => {
   })
   
   function render(changedActions = {}) {
-    const ConnectedApp = connect(
-      mapStateToProps, 
-      { ...actions, ...changedActions }
-    )(App)
+    const enhance = compose(
+      connect(mapStateToProps, { ...actions, ...changedActions }),
+      withActionLoadingIndicators(props => ({ loadRepository: props.loadRepository })),
+    )
+    const ConnectedApp = enhance(App)
     wrapper = mount(
       <Provider store={store}>
         <ConnectedApp/>
