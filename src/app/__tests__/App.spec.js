@@ -5,7 +5,7 @@ import { compose } from 'redux'
 import { connect, Provider } from 'react-redux'
 
 import { mapStateToProps, actions } from '../'
-import { App, Assignee, Issue, RepoSearchBarInput } from '../App'
+import { App, Assignee, Issue, Loader, RepoSearchBarInput } from '../App'
 import { createStore } from '../../system/store'
 import { withActionLoadingIndicators } from '../../lib/withActionLoadingIndicators'
 
@@ -57,6 +57,14 @@ describe('App', () => {
     await store.dispatch(actions.loadRepository())
     wrapper.update()
     expect(wrapper.find(Issue).length).toBe(30)
+  })
+
+  it('shows loader when loading repository', async () => {
+    changeInput($repoInput(), 'facebook/react')
+    expect(wrapper.find(Loader).length).toBe(0)
+    jest.advanceTimersByTime(500)
+    wrapper.update()
+    expect(wrapper.find(Loader).length).toBe(1)
   })
   
   function render(changedActions = {}) {

@@ -11,7 +11,7 @@ export class App extends React.PureComponent {
   loadRepository = debounce(this.props.loadRepository, 500)
   
   render() {
-    const { app } = this.props
+    const { app, loading } = this.props
     return (
       <div>
         <RepoSearchBarInput
@@ -34,6 +34,9 @@ export class App extends React.PureComponent {
             />
           )}
         </div>
+        { loading.loadRepository &&
+          <Loader/>
+        }
       </div>
     )
   }
@@ -48,5 +51,9 @@ export const Assignee = emotion.div`
 `
 
 export const Issue = emotion.div`
+  
+`
+
+export const Loader = emotion.div`
   
 `
