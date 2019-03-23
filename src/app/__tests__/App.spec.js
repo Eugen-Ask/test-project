@@ -25,7 +25,7 @@ describe('App', () => {
       app: initialState,
       changeRepoInput: jest.fn(),
       loadRepository: jest.fn(),
-      loadIssues: jest.fn(),
+      loadMoreIssues: jest.fn(),
       loadMoreAssignees: jest.fn(),
       loading: {}
     }
@@ -172,7 +172,7 @@ describe('App', () => {
             lastLoadedPage: 1,
             totalPages: 2,
           }
-          props.loading.loadIssues = true
+          props.loading.loadMoreIssues = true
         })
         expect(wrapper.find('IntersectionObserver').exists()).toBe(false)
       })
@@ -204,7 +204,7 @@ describe('App', () => {
 
       it('is shown if more issues are loading', async () => {
         render(props => {
-          props.loading.loadIssues = true
+          props.loading.loadMoreIssues = true
         })
         expect(wrapper.find('Issues Loader').exists()).toBe(true)
       })

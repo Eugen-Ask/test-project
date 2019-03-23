@@ -16,7 +16,7 @@ export const loadRepository = () => async (dispatch, getState) => {
   dispatch(clearIssues())
   dispatch(clearAssignees())
   dispatch(loadMoreAssignees(app.repoSearchBarValue))
-  return await dispatch(loadIssues(app.repoSearchBarValue))
+  return await dispatch(loadMoreIssues(app.repoSearchBarValue))
 }
 
 export const loadMoreAssignees = () => async (dispatch, getState) => {
@@ -25,7 +25,7 @@ export const loadMoreAssignees = () => async (dispatch, getState) => {
   dispatch(assigneesHasLoaded(response))
 }
 
-export const loadIssues = () => async (dispatch, getState) => {
+export const loadMoreIssues = () => async (dispatch, getState) => {
   const { repoSearchBarValue, currentAssignee, issues: { lastLoadedPage = 0 } } = getState().app
   try {
     const response = await requestIssues(repoSearchBarValue, currentAssignee, lastLoadedPage + 1)
@@ -39,7 +39,7 @@ export const loadIssues = () => async (dispatch, getState) => {
 export const loadIssuesOfAssignee = (login) => async (dispatch) => {
   dispatch(selectAssignee(login))
   dispatch(clearIssues())
-  return await dispatch(loadIssues())
+  return await dispatch(loadMoreIssues())
 }
 
 function getErrorMessage(e) {

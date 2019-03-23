@@ -86,16 +86,16 @@ describe('Actions', () => {
     })
   })
 
-  describe('loadIssues', () => {
+  describe('loadMoreIssues', () => {
     it('loads issues', async () => {
-      await dispatch(actions.loadIssues())
+      await dispatch(actions.loadMoreIssues())
       expect(state.app.issues.data.length).toBe(30)
       expect(state.app.issues.lastLoadedPage).toBe(1)
       expect(state.app.issues.totalPages).toBe(20)
     })
     it('loads more issues if previous result is not cleared', async () => {
-      await dispatch(actions.loadIssues())
-      await dispatch(actions.loadIssues())
+      await dispatch(actions.loadMoreIssues())
+      await dispatch(actions.loadMoreIssues())
       expect(state.app.issues.data.length).toBe(60)
       expect(state.app.issues.lastLoadedPage).toBe(2)
     })
@@ -120,7 +120,7 @@ describe('Actions', () => {
     })
     it('loads issues of selected assignee', async () => {
       dispatch(actions.selectAssignee('gaearon'))
-      await dispatch(actions.loadIssues())
+      await dispatch(actions.loadIssuesOfAssignee())
       expect(state.app.issues.data.length).toBe(4)
     })
   })

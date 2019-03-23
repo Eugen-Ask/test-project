@@ -27,7 +27,7 @@ export class App extends React.PureComponent {
           issues={this.props.app.issues}
           loadingError={this.props.app.loadingError}
           loading={this.props.loading}
-          loadIssues={this.props.loadIssues}
+          loadMoreIssues={this.props.loadMoreIssues}
         />
       </div>
     )
