@@ -6,27 +6,26 @@ import { Issues } from './Issues'
 
 export class App extends React.PureComponent {
   render() {
-    const { app } = this.props
     return (
       <div>
         <SearchBar
-          repoSearchBarValue={app.repoSearchBarValue}
+          repoSearchBarValue={this.props.app.repoSearchBarValue}
           changeRepoInput={this.props.changeRepoInput}
           loadRepository={this.props.loadRepository}
-          assigneeInputValue={app.assigneeSearchInputValue}
+          assigneeInputValue={this.props.app.assigneeSearchInputValue}
           changeAssigneeSearchInput={this.props.changeAssigneeSearchInput}
         />
         <Assignees
-          assignees={app.assignees}
-          assigneeSearchInputValue={app.assigneeSearchInputValue}
+          assignees={this.props.app.assignees}
+          assigneeSearchInputValue={this.props.app.assigneeSearchInputValue}
           loadAssignees={this.props.loadAssignees}
-          currentAssignee={app.currentAssignee}
+          currentAssignee={this.props.app.currentAssignee}
           loadIssuesOfAssignee={this.props.loadIssuesOfAssignee}
           loading={this.props.loading}
         />
         <Issues
-          issues={app.issues}
-          loadingError={app.loadingError}
+          issues={this.props.app.issues}
+          loadingError={this.props.app.loadingError}
           loading={this.props.loading}
           loadIssues={this.props.loadIssues}
         />
