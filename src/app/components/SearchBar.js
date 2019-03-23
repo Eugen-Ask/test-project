@@ -2,7 +2,7 @@ import React from 'react'
 import emotion from '@emotion/styled/macro'
 import debounce from 'lodash/debounce'
 
-import { colors } from '../ui/theme'
+import { colors } from '../../ui/theme'
 
 export class SearchBar extends React.PureComponent {
   onChangeRepoSearchBar = (e) => {

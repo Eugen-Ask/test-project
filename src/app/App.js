@@ -1,8 +1,8 @@
 import React from 'react'
 
-import { SearchBar } from './SearchBar'
-import { Assignees } from './Assignees'
-import { Issues } from './Issues'
+import { SearchBar } from './components/SearchBar'
+import { Assignees } from './components/Assignees'
+import { Issues } from './components/Issues'
 
 export class App extends React.PureComponent {
   render() {

@@ -1,8 +1,8 @@
 import React from 'react'
 import emotion from '@emotion/styled/macro'
 
-import { colors } from '../ui/theme'
-import { ReactComponent as LoadingIcon } from '../ui/icons/loading.svg'
+import { colors } from '../../ui/theme'
+import { ReactComponent as LoadingIcon } from '../../ui/icons/loading.svg'
 
 export class Assignees extends React.PureComponent {
   get assignees() {

@@ -3,9 +3,9 @@ import TimeAgo from 'react-timeago'
 import emotion from '@emotion/styled/macro'
 import IntersectionObserver from '@researchgate/react-intersection-observer'
 
-import { colors } from '../ui/theme'
-import { ReactComponent as IssueIcon } from '../ui/icons/issue.svg'
-import { ReactComponent as LoadingIcon } from '../ui/icons/loading.svg'
+import { colors } from '../../ui/theme'
+import { ReactComponent as IssueIcon } from '../../ui/icons/issue.svg'
+import { ReactComponent as LoadingIcon } from '../../ui/icons/loading.svg'
 
 export class Issues extends React.PureComponent {
   LoadMoreIssuesTrigger = () => {
