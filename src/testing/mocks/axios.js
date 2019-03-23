@@ -5,7 +5,7 @@ jest.mock('axios', () => {
         if (path === `/repos/facebook/react/issues`) {
           if (assignee === 'gaearon') {
             return {
-              data: Array.from(Array(4), issueFake),
+              data: Array.from(Array(4), () => issueFake('gaearon')),
               headers: {
                 link: githubResponseLinksMock(page, 1)
               }
@@ -33,11 +33,15 @@ jest.mock('axios', () => {
     }),
   })
   
-  function issueFake() {
+  function issueFake(assigneeLogin) {
     issueFake.lastId = issueFake.lastId 
       ? issueFake.lastId + 1 
       : 1
-    return { id: issueFake.lastId } 
+    const issue = { id: issueFake.lastId }
+    if (assigneeLogin) {
+      issue.assignee = { login: assigneeLogin }
+    }
+    return issue
   }
 
   function assigneeFake() {

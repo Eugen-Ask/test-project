@@ -108,15 +108,15 @@ describe('Actions', () => {
       
       await dispatch(actions.loadIssuesOfAssignee('gaearon'))
       expect(state.app.issues.data.length).toBe(4)
+      expect(state.app.issues.data.every(_ => _.assignee.login === 'gaearon')).toBe(true)
     })
     it("doesn't clear previously loaded assignees", async () => {
       await dispatch(actions.loadRepository())
-      expect(state.app.assignees.data.length).toBe(30)
+      const previouslyLoadedAssignees = state.app.assignees.data
+      expect(previouslyLoadedAssignees.length).toBe(30)
 
-      const loadingIssues = dispatch(actions.loadIssuesOfAssignee('gaearon'))
-      expect(state.app.assignees.data.length).toBe(30)
-      await loadingIssues
-      expect(state.app.assignees.data.length).toBe(30)
+      await dispatch(actions.loadIssuesOfAssignee('gaearon'))
+      expect(state.app.assignees.data).toBe(previouslyLoadedAssignees)
     })
     it('loads issues of selected assignee', async () => {
       dispatch(actions.selectAssignee('gaearon'))

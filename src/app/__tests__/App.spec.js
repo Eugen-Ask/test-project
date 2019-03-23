@@ -37,17 +37,15 @@ describe('App', () => {
     jest.advanceTimersByTime(0)
   })
   
-  it('renders without crashing', () => {})
-  
   describe('SearchBar', () => {
     describe('RepoInput', () => {
-      it('calls "changeRepoInput" when changing repo input', () => {
+      it('calls "changeRepoInput" when changed', () => {
         const input = wrapper.find('SearchBar RepoInputWrapper Input')
         changeInput(input, 'facebook/react')
         expect(props.changeRepoInput).toHaveBeenCalledWith('facebook/react')
       })
     
-      it ('calls "loadRepository" on 1000 ms after last change of repo input', () => {
+      it ('calls "loadRepository" on 1000 ms after the last change', () => {
         const input = wrapper.find('SearchBar RepoInputWrapper Input')
         changeInput(input, 'facebook/react')
     
@@ -60,132 +58,158 @@ describe('App', () => {
         expect(props.loadRepository).toHaveBeenCalled()
       })
     })
-  })
 
-  it('shows assignees if loaded', async () => {
-    render(props => {
-      props.app.assignees.data = getFakeAssignees()
+    describe('AssigneeInput', () => {
+      it("filters assignees by their name", () => {
+        render(props => {
+          props.app.assigneeSearchInputValue = 'g'
+          props.app.assignees.data = getFakeAssignees()
+        })
+        expect(wrapper.find('Assignee').length).toBe(1)
+      })
+  
+      it("does not filter assignees if filter is empty", () => {
+        render(props => {
+          props.app.assigneeSearchInputValue = ''
+          props.app.assignees.data = getFakeAssignees()
+        })
+        expect(wrapper.find('Assignee').length).toBe(3)
+      })
     })
-    expect(wrapper.find('Assignee').length).toBe(3)
   })
 
-  it('shows issues if loaded', async () => {
-    render(props => {
-      props.app.issues.data = getFakeIssues()
+  describe('Assignees', () => {
+    it('shows assignees if loaded', async () => {
+      render(props => {
+        props.app.assignees.data = getFakeAssignees()
+      })
+      expect(wrapper.find('Assignee').length).toBe(3)
     })
-    expect(wrapper.find('Issue').length).toBe(3)
-  })
+    
+    describe('LoadMoreButton', () => {
+      it('calls loadAssignees when clicking on the button "load more assignees"', () => {
+        render(props => {
+          props.app.assignees = {
+            data: getFakeAssignees(),
+            lastLoadedPage: 1,
+            totalPages: 2,
+          }
+        })
+        wrapper.find('Assignees LoadMoreButton').simulate('click')
+        expect(props.loadAssignees).toHaveBeenCalled()
+      })
+      
+      it('does not show LoadMoreAssignees button if no assignees loaded', () => {
+        expect(wrapper.find('Assignees LoadMoreButton').exists()).toBe(false)
+      })
+      
+      it('shows LoadMoreButton if something but not everything is loaded', () => {
+        render(props => {
+          props.app.assignees = {
+            data: getFakeAssignees(),
+            lastLoadedPage: 1,
+            totalPages: 2,
+          }
+        })
+        expect(wrapper.find('Assignees LoadMoreButton').exists()).toBe(true)
+      })
 
-  it('does not show loader if nothing is loading', async () => {
-    expect(wrapper.find('Issues Loader').exists()).toBe(false)
+      it('does not show LoadMoreButton button all the assignees loaded', () => {
+        render(props => {
+          props.app.assignees = {
+            data: getFakeAssignees(),
+            lastLoadedPage: 2,
+            totalPages: 2,
+          }
+        })
+        expect(wrapper.find('Assignees LoadMoreButton').exists()).toBe(false)
+      })
+    })
   })
   
-  it('shows loader if repository is loading', async () => {
-    render(props => {
-      props.loading.loadRepository = true
+  describe('Issues', () => {
+    it('shows issues if loaded', async () => {
+      render(props => {
+        props.app.issues.data = getFakeIssues()
+      })
+      expect(wrapper.find('Issue').length).toBe(3)
     })
-    expect(wrapper.find('Issues Loader').exists()).toBe(true)
-  })
 
-  it('shows loader if more issues are loading', async () => {
-    render(props => {
-      props.loading.loadIssues = true
-    })
-    expect(wrapper.find('Issues Loader').exists()).toBe(true)
-  })
-
-  it('calls loadAssignees when clicking on the button "load more assignees"', () => {
-    render(props => {
-      props.app.assignees = {
-        data: getFakeAssignees(),
-        lastLoadedPage: 1,
-        totalPages: 2,
-      }
-    })
-    wrapper.find('Assignees LoadMoreButton').simulate('click')
-    expect(props.loadAssignees).toHaveBeenCalled()
-  })
-
-  it('does not show LoadMoreAssignees button if no assignees loaded', () => {
-    expect(wrapper.find('Assignees LoadMoreButton').exists()).toBe(false)
-  })
-
-  it('shows LoadMoreAssignees button if not all data is loaded', () => {
-    render(props => {
-      props.app.assignees = {
-        data: getFakeAssignees(),
-        lastLoadedPage: 1,
-        totalPages: 2,
-      }
-    })
-    expect(wrapper.find('Assignees LoadMoreButton').exists()).toBe(true)
-  })
-
-  it("does not trigger 'loadIssues' if issues if data still not loaded", () => {
-    expect(props.loadIssues).not.toHaveBeenCalled()
-  })
+    describe('IntersectionObserver', () => {
+      it("is hidden if nothing is still loaded", () => {
+        render(props => {
+          props.app.issues.data = []
+        })
+        expect(wrapper.find('IntersectionObserver').exists()).toBe(false)
+      })
   
-  it("triggers 'loadIssues' if not everything is loaded", () => {
-    render(props => {
-      props.app.issues = {
-        data: getFakeIssues(),
-        lastLoadedPage: 1,
-        totalPages: 2,
-      }
-    })
-    expect(props.loadIssues).toHaveBeenCalled()
-  })
+      it("is shown if something but not everything is loaded", () => {
+        render(props => {
+          props.app.issues = {
+            data: getFakeIssues(),
+            lastLoadedPage: 1,
+            totalPages: 2,
+          }
+        })
+        expect(wrapper.find('IntersectionObserver').exists()).toBe(true)
+      })
 
-  it("does not trigger 'loadIssues' if everything is loaded", () => {
-    render(props => {
-      props.app.issues = {
-        data: getFakeIssues(),
-        lastLoadedPage: 2,
-        totalPages: 2,
-      }
-    })
-    expect(props.loadIssues).not.toHaveBeenCalled()
-  })
+      it('is hidden if something but not everything is loaded', () => {
+        render(props => {
+          props.app.assignees = {
+            data: getFakeAssignees(),
+            lastLoadedPage: 2,
+            totalPages: 2,
+          }
+        })
+        expect(wrapper.find('IntersectionObserver').exists()).toBe(false)
+      })
   
-  it("does not trigger 'loadIssues' if more issues are loading", () => {
-    render(props => {
-      props.app.issues = {
-        data: getFakeIssues(),
-        lastLoadedPage: 1,
-        totalPages: 2,
-      }
-      props.loading.loadIssues = true
-    })
-    expect(props.loadIssues).not.toHaveBeenCalled()
-  })
+      it("is hidden if issues loading is in progress", () => {
+        render(props => {
+          props.app.issues = {
+            data: getFakeIssues(),
+            lastLoadedPage: 1,
+            totalPages: 2,
+          }
+          props.loading.loadIssues = true
+        })
+        expect(wrapper.find('IntersectionObserver').exists()).toBe(false)
+      })
   
-  it("does not trigger 'loadIssues' if repository is loading", () => {
-    render(props => {
-      props.app.issues = {
-        data: getFakeIssues(),
-        lastLoadedPage: 1,
-        totalPages: 2,
-      }
-      props.loading.loadRepository = true
-    })
-    expect(props.loadIssues).not.toHaveBeenCalled()
-  })
+      it("is hidden if repository loading is in progress", () => {
+        render(props => {
+          props.app.issues = {
+            data: getFakeIssues(),
+            lastLoadedPage: 1,
+            totalPages: 2,
+          }
+          props.loading.loadRepository = true
+        })
+        expect(wrapper.find('IntersectionObserver').exists()).toBe(false)
+      })
+    });
 
-  it("does not filter assignees if filter is empty", () => {
-    render(props => {
-      props.app.assigneeSearchInputValue = 'g'
-      props.app.assignees.data = getFakeAssignees()
-    })
-    expect(wrapper.find('Assignee').length).toBe(1)
-  })
+    describe('Loader', () => {
+      it('is hidden if nothing is loading', async () => {
+        expect(wrapper.find('Issues Loader').exists()).toBe(false)
+      })
 
-  it("filters assignees by their name", () => {
-    render(props => {
-      props.app.assigneeSearchInputValue = 'g'
-      props.app.assignees.data = getFakeAssignees()
-    })
-    expect(wrapper.find('Assignee').length).toBe(1)
-  })
+      it('is shown if repository is loading', async () => {
+        render(props => {
+          props.loading.loadRepository = true
+        })
+        expect(wrapper.find('Issues Loader').exists()).toBe(true)
+      })
+
+      it('is shown if more issues are loading', async () => {
+        render(props => {
+          props.loading.loadIssues = true
+        })
+        expect(wrapper.find('Issues Loader').exists()).toBe(true)
+      })
+    });
+  })  
 
   function render(producer = _ => _) {
     props = produce(props, producer)
