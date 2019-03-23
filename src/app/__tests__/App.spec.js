@@ -47,16 +47,16 @@ describe('App', () => {
         expect(props.changeRepoInput).toHaveBeenCalledWith('facebook/react')
       })
     
-      it ('calls "loadRepository" on 500 ms after last change of repo input', () => {
+      it ('calls "loadRepository" on 1000 ms after last change of repo input', () => {
         const input = wrapper.find('SearchBar RepoInputWrapper Input')
         changeInput(input, 'facebook/react')
     
         expect(props.loadRepository).not.toHaveBeenCalled()
     
-        jest.advanceTimersByTime(499)
+        jest.advanceTimersByTime(999)
         expect(props.loadRepository).not.toHaveBeenCalled()
     
-        jest.advanceTimersByTime(500)
+        jest.advanceTimersByTime(1000)
         expect(props.loadRepository).toHaveBeenCalled()
       })
     })

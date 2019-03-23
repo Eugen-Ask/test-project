@@ -63,6 +63,7 @@ export const appReducer = createReducer({
     state.loadingError = payload
   }),
   [selectAssignee]: produce((state, assignee) => {
+    state.assigneeSearchInputValue = ''
     state.currentAssignee = assignee
   }),
 }, initialState)

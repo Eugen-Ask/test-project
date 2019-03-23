@@ -10,7 +10,7 @@ export class SearchBar extends React.PureComponent {
     this.loadRepository()
   }
 
-  loadRepository = debounce(this.props.loadRepository, 500)
+  loadRepository = debounce(this.props.loadRepository, 1000)
   
   render() {
     return (
@@ -18,6 +18,7 @@ export class SearchBar extends React.PureComponent {
         <RepoInputWrapper>
           https://github.com/
           <Input 
+            autoFocus
             value={this.props.repoSearchBarValue}
             onChange={this.onChangeRepoSearchBar}
             placeholder="facebook/react"
