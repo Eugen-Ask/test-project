@@ -46,11 +46,6 @@ export class App extends React.PureComponent {
           assigneeInputValue={app.assigneeSearchInputValue}
           changeAssigneeSearchInput={this.props.changeAssigneeSearchInput}
         />
-        { app.loadingError &&
-          <Error>
-            { app.loadingError }
-          </Error>
-        }
         <div>
           { this.assignees.map(assignee =>
             <Assignee
@@ -68,6 +63,11 @@ export class App extends React.PureComponent {
           }
         </div>
         <div>
+          { app.loadingError &&
+            <Error>
+              { app.loadingError }
+            </Error>
+          }
           { app.issues.data.map(issue =>
             <Issue
               key={issue.id}
