@@ -3,21 +3,22 @@ import mapValues from 'lodash/mapValues'
 
 export function withActionLoadingIndicators(actions) {
   return (Component) => 
-    class ActionLoadingIndicatorsProvider extends React.Component {
+    class WithActionLoadingIndicators extends React.Component {
       state = { }
   
       getDecoratedActions() {
         if (this.getDecoratedActions.cache) {
           return this.getDecoratedActions.cache
         }
-        const decoratedActions = mapValues(actions(this.props), (theAction, actionName) =>
-          async (...args) => {
-            this.setState({ [actionName]: true })
+        const decoratedActions = mapValues(
+          actions(this.props), 
+          ({ action, indicatorName }) => async (...args) => {
+            this.setState({ [indicatorName]: true })
             try {
-              return await theAction(...args)
+              return await action(...args)
             }
             finally {
-              this.setState({ [actionName]: false })
+              this.setState({ [indicatorName]: false })
             }
           }
         )

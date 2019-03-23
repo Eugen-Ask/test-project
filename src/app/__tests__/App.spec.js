@@ -172,7 +172,7 @@ describe('App', () => {
             lastLoadedPage: 1,
             totalPages: 2,
           }
-          props.loading.loadMoreIssues = true
+          props.loading.issues = true
         })
         expect(wrapper.find('IntersectionObserver').exists()).toBe(false)
       })
@@ -184,7 +184,7 @@ describe('App', () => {
             lastLoadedPage: 1,
             totalPages: 2,
           }
-          props.loading.loadRepository = true
+          props.loading.repository = true
         })
         expect(wrapper.find('IntersectionObserver').exists()).toBe(false)
       })
@@ -197,14 +197,14 @@ describe('App', () => {
 
       it('is shown if repository is loading', async () => {
         render(props => {
-          props.loading.loadRepository = true
+          props.loading.repository = true
         })
         expect(wrapper.find('Issues Loader').exists()).toBe(true)
       })
 
       it('is shown if more issues are loading', async () => {
         render(props => {
-          props.loading.loadMoreIssues = true
+          props.loading.issues = true
         })
         expect(wrapper.find('Issues Loader').exists()).toBe(true)
       })

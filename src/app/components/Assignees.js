@@ -30,7 +30,7 @@ export class Assignees extends React.PureComponent {
             </Text>
           </Assignee>
         ))}
-        { this.props.loading.loadMoreAssignees
+        { this.props.loading.assignees
           ? <Loading/>
           : <this.LoadMoreButton/>
         }

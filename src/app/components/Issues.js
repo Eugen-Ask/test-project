@@ -47,8 +47,8 @@ export class Issues extends React.PureComponent {
     if (
       issues.data.length > 0
       && issues.lastLoadedPage < issues.totalPages
-      && !loading.loadMoreIssues
-      && !loading.loadRepository
+      && !loading.issues
+      && !loading.repository
     ){
       return (
         <IntersectionObserver
@@ -64,9 +64,9 @@ export class Issues extends React.PureComponent {
 
   Loader = () => {
     const { loading } = this.props
-    if (loading.loadRepository 
-      || loading.loadMoreIssues 
-      || loading.loadIssuesOfAssignee) {
+    if (loading.repository 
+      || loading.issues 
+      || loading.issuesOfAssignee) {
       return <Loader/>
     }
     return null
