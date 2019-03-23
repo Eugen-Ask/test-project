@@ -60,7 +60,6 @@ export const appReducer = createReducer({
     state.currentAssignee = undefined
   }),
   [issuesLoadingFailed]: produce((state, payload) => {
-    state.assignees.data = []
     state.loadingError = payload
   }),
   [selectAssignee]: produce((state, assignee) => {

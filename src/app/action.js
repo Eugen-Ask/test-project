@@ -21,19 +21,19 @@ export const loadRepository = () => async (dispatch, getState) => {
 
 export const loadAssignees = () => async (dispatch, getState) => {
   const { repoSearchBarValue, assignees: { lastLoadedPage = 0 } } = getState().app
-  try {
-    const response = await requestAssignees(repoSearchBarValue, lastLoadedPage + 1)
-    dispatch(assigneesHasLoaded(response))
-  } catch (e) {
-    const message = getErrorMessage(e)
-    dispatch(issuesLoadingFailed(message))
-  }
+  const response = await requestAssignees(repoSearchBarValue, lastLoadedPage + 1)
+  dispatch(assigneesHasLoaded(response))
 }
 
 export const loadIssues = () => async (dispatch, getState) => {
   const { repoSearchBarValue, currentAssignee, issues: { lastLoadedPage = 0 } } = getState().app
-  const response = await requestIssues(repoSearchBarValue, currentAssignee, lastLoadedPage + 1)
-  dispatch(issuesHasLoaded(response))
+  try {
+    const response = await requestIssues(repoSearchBarValue, currentAssignee, lastLoadedPage + 1)
+    dispatch(issuesHasLoaded(response))
+  } catch (e) {
+    const message = getErrorMessage(e)
+    dispatch(issuesLoadingFailed(message))
+  }
 }
 
 function getErrorMessage(e) {
