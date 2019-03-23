@@ -119,8 +119,7 @@ describe('Actions', () => {
       expect(state.app.assignees.data).toBe(previouslyLoadedAssignees)
     })
     it('loads issues of selected assignee', async () => {
-      dispatch(actions.selectAssignee('gaearon'))
-      await dispatch(actions.loadIssuesOfAssignee())
+      await dispatch(actions.loadIssuesOfAssignee('gaearon'))
       expect(state.app.issues.data.length).toBe(4)
     })
   })
