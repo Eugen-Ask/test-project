@@ -18,7 +18,7 @@ export class App extends React.PureComponent {
         <Assignees
           assignees={this.props.app.assignees}
           assigneeSearchInputValue={this.props.app.assigneeSearchInputValue}
-          loadAssignees={this.props.loadAssignees}
+          loadMoreAssignees={this.props.loadMoreAssignees}
           currentAssignee={this.props.app.currentAssignee}
           loadIssuesOfAssignee={this.props.loadIssuesOfAssignee}
           loading={this.props.loading}

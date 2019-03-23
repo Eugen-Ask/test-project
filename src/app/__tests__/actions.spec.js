@@ -71,16 +71,16 @@ describe('Actions', () => {
     })
   })
   
-  describe('loadAssignees', () => {
+  describe('loadMoreAssignees', () => {
     it('loads assignees', async () => {
-      await dispatch(actions.loadAssignees())
+      await dispatch(actions.loadMoreAssignees())
       expect(state.app.assignees.data.length).toBe(30)
       expect(state.app.assignees.lastLoadedPage).toBe(1)
       expect(state.app.assignees.totalPages).toBe(2)
     })
     it('loads more assignees if previous result is not cleared', async () => {
-      await dispatch(actions.loadAssignees())
-      await dispatch(actions.loadAssignees())
+      await dispatch(actions.loadMoreAssignees())
+      await dispatch(actions.loadMoreAssignees())
       expect(state.app.assignees.data.length).toBe(60)
       expect(state.app.assignees.lastLoadedPage).toBe(2)
     })

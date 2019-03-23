@@ -18,7 +18,7 @@ export class Assignees extends React.PureComponent {
     const { data, lastLoadedPage, totalPages } = this.props.assignees
     if (data.length > 0 && lastLoadedPage < totalPages) {
       return (
-        <LoadMoreButton onClick={this.props.loadAssignees}>
+        <LoadMoreButton onClick={this.props.loadMoreAssignees}>
           <Text>
             <b>More</b>
           </Text>
@@ -53,7 +53,7 @@ export class Assignees extends React.PureComponent {
             </Text>
           </Assignee>
         ))}
-        { this.props.loading.loadAssignees 
+        { this.props.loading.loadMoreAssignees 
           ? <Loading/>
           : <this.LoadMoreButton/>
         }

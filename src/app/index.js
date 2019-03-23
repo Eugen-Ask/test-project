@@ -7,7 +7,7 @@ import {
   changeAssigneeSearchInput,
   selectAssignee,
   loadRepository,
-  loadAssignees,
+  loadMoreAssignees,
   loadIssues, 
   loadIssuesOfAssignee,
   clearIssues, 
@@ -24,7 +24,7 @@ export const actions = {
   changeAssigneeSearchInput,
   selectAssignee,
   loadRepository,
-  loadAssignees,
+  loadMoreAssignees,
   loadIssues,
   loadIssuesOfAssignee,
   clearIssues,
@@ -36,7 +36,7 @@ const enhance = compose(
   withActionLoadingIndicators(props => ({ 
     loadRepository: props.loadRepository,
     loadIssues: props.loadIssues,
-    loadAssignees: props.loadAssignees,
+    loadMoreAssignees: props.loadMoreAssignees,
     loadIssuesOfAssignee: props.loadIssuesOfAssignee,
   })),
 )

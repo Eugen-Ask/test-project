@@ -26,7 +26,7 @@ describe('App', () => {
       changeRepoInput: jest.fn(),
       loadRepository: jest.fn(),
       loadIssues: jest.fn(),
-      loadAssignees: jest.fn(),
+      loadMoreAssignees: jest.fn(),
       loading: {}
     }
     render()
@@ -87,7 +87,7 @@ describe('App', () => {
     })
     
     describe('LoadMoreButton', () => {
-      it('calls loadAssignees when clicking on the button "load more assignees"', () => {
+      it('calls loadMoreAssignees on click', () => {
         render(props => {
           props.app.assignees = {
             data: getFakeAssignees(),
@@ -96,14 +96,14 @@ describe('App', () => {
           }
         })
         wrapper.find('Assignees LoadMoreButton').simulate('click')
-        expect(props.loadAssignees).toHaveBeenCalled()
+        expect(props.loadMoreAssignees).toHaveBeenCalled()
       })
       
-      it('does not show LoadMoreAssignees button if no assignees loaded', () => {
+      it('is hidden if no assignees are loaded', () => {
         expect(wrapper.find('Assignees LoadMoreButton').exists()).toBe(false)
       })
       
-      it('shows LoadMoreButton if something but not everything is loaded', () => {
+      it('is shown if something but not everything is loaded', () => {
         render(props => {
           props.app.assignees = {
             data: getFakeAssignees(),
@@ -114,7 +114,7 @@ describe('App', () => {
         expect(wrapper.find('Assignees LoadMoreButton').exists()).toBe(true)
       })
 
-      it('does not show LoadMoreButton button all the assignees loaded', () => {
+      it('is hidden if all the assignees are loaded', () => {
         render(props => {
           props.app.assignees = {
             data: getFakeAssignees(),
