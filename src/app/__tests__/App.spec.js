@@ -4,7 +4,7 @@ import { mount } from 'enzyme'
 import produce from 'immer'
 import IntersectionObserver from '@researchgate/react-intersection-observer'
 
-import { App, Issue, Loader, LoadMoreAssignees } from '../App'
+import { App } from '../App'
 import { initialState } from '../reducer'
 
 jest.mock('@researchgate/react-intersection-observer')
@@ -66,32 +66,32 @@ describe('App', () => {
     render(props => {
       props.app.assignees.data = getFakeAssignees()
     })
-    expect(wrapper.find('Assignees Assignee').length).toBe(3)
+    expect(wrapper.find('Assignee').length).toBe(3)
   })
 
   it('shows issues if loaded', async () => {
     render(props => {
       props.app.issues.data = getFakeIssues()
     })
-    expect(wrapper.find(Issue).length).toBe(3)
+    expect(wrapper.find('Issue').length).toBe(3)
   })
 
   it('does not show loader if nothing is loading', async () => {
-    expect(wrapper.find(Loader).exists()).toBe(false)
+    expect(wrapper.find('Issues Loader').exists()).toBe(false)
   })
   
   it('shows loader if repository is loading', async () => {
     render(props => {
       props.loading.loadRepository = true
     })
-    expect(wrapper.find(Loader).exists()).toBe(true)
+    expect(wrapper.find('Issues Loader').exists()).toBe(true)
   })
 
   it('shows loader if more issues are loading', async () => {
     render(props => {
       props.loading.loadIssues = true
     })
-    expect(wrapper.find(Loader).exists()).toBe(true)
+    expect(wrapper.find('Issues Loader').exists()).toBe(true)
   })
 
   it('calls loadAssignees when clicking on the button "load more assignees"', () => {
@@ -176,7 +176,7 @@ describe('App', () => {
       props.app.assigneeSearchInputValue = 'g'
       props.app.assignees.data = getFakeAssignees()
     })
-    expect(wrapper.find('Assignees Assignee').length).toBe(1)
+    expect(wrapper.find('Assignee').length).toBe(1)
   })
 
   it("filters assignees by their name", () => {
@@ -184,7 +184,7 @@ describe('App', () => {
       props.app.assigneeSearchInputValue = 'g'
       props.app.assignees.data = getFakeAssignees()
     })
-    expect(wrapper.find('Assignees Assignee').length).toBe(1)
+    expect(wrapper.find('Assignee').length).toBe(1)
   })
 
   function render(producer = _ => _) {

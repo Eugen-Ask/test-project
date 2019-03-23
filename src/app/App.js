@@ -4,6 +4,7 @@ import IntersectionObserver from '@researchgate/react-intersection-observer'
 
 import { SearchBar } from './SearchBar'
 import { Assignees } from './Assignees'
+import { Issues } from './Issues'
 
 export class App extends React.PureComponent {
   LoadMoreIssuesTrigger = () => {
@@ -37,7 +38,7 @@ export class App extends React.PureComponent {
   }
   
   render() {
-    const { app, loading } = this.props
+    const { app } = this.props
     return (
       <div>
         <SearchBar
@@ -52,38 +53,12 @@ export class App extends React.PureComponent {
           assigneeSearchInputValue={app.assigneeSearchInputValue}
           loadAssignees={this.props.loadAssignees}
         />
-        <div>
-          { app.loadingError &&
-            <Error>
-              { app.loadingError }
-            </Error>
-          }
-          { app.issues.data.map(issue =>
-            <Issue
-              key={issue.id}
-              issue={issue}
-            >
-              {issue.title}
-            </Issue>
-          )}
-        </div>
-        <this.LoadMoreIssuesTrigger/>
-        { (loading.loadRepository || loading.loadIssues) &&
-          <Loader>Loading</Loader>
-        }
+        <Issues
+          issues={app.issues}
+          loading={this.props.loading}
+          loadIssues={this.props.loadIssues}
+        />
       </div>
     )
   }
 }
-
-export const Issue = emotion.div`
-  
-`
-
-export const Loader = emotion.div`
-  
-`
-
-export const Error = emotion.div`
-  color: red;
-`
