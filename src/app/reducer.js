@@ -24,6 +24,7 @@ export const initialState = {
   },
   issues: {
     data: [],
+    pristine: true,
     lastLoadedPage: undefined,
     totalPages: undefined,
   }
@@ -44,6 +45,7 @@ export const appReducer = createReducer({
   }),
   [issuesHasLoaded]: produce((state, payload) => {
     const { data, currentPage, totalPages } = payload
+    state.issues.pristine = false
     state.issues.data.push(...data)
     state.issues.lastLoadedPage = currentPage
     state.issues.totalPages = totalPages

@@ -39,6 +39,18 @@ export class Issues extends React.PureComponent {
     )
   }
   
+  EmptyState = () => {
+    const { data, pristine } = this.props.issues
+    if (pristine || data.length > 0) return null
+    return (
+      <OperationResult>
+        ¯\_(ツ)_/¯
+        <br/>
+        Nothing here 
+      </OperationResult>
+    )
+  }
+  
   render() {
     return (
       <Self>
@@ -47,6 +59,7 @@ export class Issues extends React.PureComponent {
             { this.props.loadingError }
           </OperationResult>
         }
+        <this.EmptyState/>
         <List>
           { this.props.issues.data.map(issue => (
             <Issue key={issue.id}>
