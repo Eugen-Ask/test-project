@@ -1,18 +1,9 @@
 import { configure } from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16'
-import debouce from 'lodash/debounce'
 
 import './mocks/axios'
-
-configure({ adapter: new Adapter() })
+import './mocks/debounce'
 
 jest.useFakeTimers();
 
-jest.mock('lodash/debounce')
-debouce.mockImplementation((fn, delay) => {
-  let timer
-  return (...args) => {
-    clearTimeout(timer)
-    timer = setTimeout(() => fn(...args), delay)
-  }
-})
+configure({ adapter: new Adapter() })
