@@ -44,6 +44,7 @@ export const appReducer = createReducer({
     state.assignees.data.push(...data)
     state.assignees.lastLoadedPage = currentPage
     state.assignees.totalPages = totalPages
+    state.loadingError = initialState.loadingError
   }),
   
   [issuesHasLoaded]: produce((state, payload) => {
@@ -70,7 +71,7 @@ export const appReducer = createReducer({
   }),
   
   [selectAssignee]: produce((state, assignee) => {
-    state.assigneeSearchInputValue = ''
+    state.assigneeSearchInputValue = initialState.assigneeSearchInputValue
     state.currentAssignee = assignee
   }),
 }, initialState)

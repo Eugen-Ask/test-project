@@ -36,6 +36,7 @@ const enhance = compose(
   withActionLoadingIndicators(props => ({ 
     loadRepository: props.loadRepository,
     loadIssues: props.loadIssues,
+    loadAssignees: props.loadAssignees,
     loadIssuesOfAssignee: props.loadIssuesOfAssignee,
   })),
 )
