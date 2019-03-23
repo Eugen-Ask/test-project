@@ -34,15 +34,18 @@ export const appReducer = createReducer({
   [changeRepoInput]: produce((state, payload) => {
     state.repoSearchBarValue = payload
   }),
+  
   [changeAssigneeSearchInput]: produce((state, payload) => {
     state.assigneeSearchInputValue = payload
   }),
+  
   [assigneesHasLoaded]: produce((state, payload) => {
     const { data, currentPage, totalPages } = payload
     state.assignees.data.push(...data)
     state.assignees.lastLoadedPage = currentPage
     state.assignees.totalPages = totalPages
   }),
+  
   [issuesHasLoaded]: produce((state, payload) => {
     const { data, currentPage, totalPages } = payload
     state.issues.pristine = false
@@ -50,18 +53,22 @@ export const appReducer = createReducer({
     state.issues.lastLoadedPage = currentPage
     state.issues.totalPages = totalPages
   }),
+  
   [clearIssues]: produce((state) => {
     state.issues = initialState.issues
     state.loadingError = initialState.loadingError
   }),
+  
   [clearAssignees]: produce((state) => {
     state.assignees = initialState.assignees
     state.assigneeSearchInputValue = initialState.assigneeSearchInputValue
     state.currentAssignee = undefined
   }),
+  
   [issuesLoadingFailed]: produce((state, payload) => {
     state.loadingError = payload
   }),
+  
   [selectAssignee]: produce((state, assignee) => {
     state.assigneeSearchInputValue = ''
     state.currentAssignee = assignee

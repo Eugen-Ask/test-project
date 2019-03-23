@@ -36,6 +36,12 @@ export const loadIssues = () => async (dispatch, getState) => {
   }
 }
 
+export const loadIssuesOfAssignee = (login) => async (dispatch) => {
+  dispatch(selectAssignee(login))
+  dispatch(clearIssues())
+  return await dispatch(loadIssues())
+}
+
 function getErrorMessage(e) {
   if (e.response.status === 404) {
     return 'This repository is not found :('

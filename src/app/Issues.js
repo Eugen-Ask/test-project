@@ -30,13 +30,10 @@ export class Issues extends React.PureComponent {
   
   Loader = () => {
     const { loading } = this.props
-    return (
-      <LoaderWrapper>
-        {(loading.loadRepository || loading.loadIssues) && 
-          <Loader/>
-        }
-      </LoaderWrapper>
-    )
+    if (loading.loadRepository || loading.loadIssues || loading.loadIssuesOfAssignee) {
+      return <Loader/>
+    }
+    return null
   }
   
   EmptyState = () => {
@@ -78,7 +75,9 @@ export class Issues extends React.PureComponent {
           ))}
           <this.LoadMoreIssuesTrigger/>
         </List>
-        <this.Loader/>
+        <LoaderWrapper>
+          <this.Loader/>
+        </LoaderWrapper>
       </Self>
     )
   }

@@ -9,6 +9,7 @@ import {
   loadRepository,
   loadAssignees,
   loadIssues, 
+  loadIssuesOfAssignee,
   clearIssues, 
   clearAssignees,
 } from './action'
@@ -25,6 +26,7 @@ export const actions = {
   loadRepository,
   loadAssignees,
   loadIssues,
+  loadIssuesOfAssignee,
   clearIssues,
   clearAssignees,
 }
@@ -34,7 +36,7 @@ const enhance = compose(
   withActionLoadingIndicators(props => ({ 
     loadRepository: props.loadRepository,
     loadIssues: props.loadIssues,
-    loadAssignees: props.loadAssignees,
+    loadIssuesOfAssignee: props.loadIssuesOfAssignee,
   })),
 )
 

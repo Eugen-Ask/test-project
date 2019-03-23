@@ -14,12 +14,6 @@ export class Assignees extends React.PureComponent {
     )
   }
   
-  loadIssuesOfAssignee = (login) => {
-    this.props.selectAssignee(login)
-    this.props.clearIssues()
-    this.props.loadIssues()
-  }
-  
   LoadMoreButton = () => {
     const { data, lastLoadedPage, totalPages } = this.props.assignees
     if (data.length > 0 && lastLoadedPage < totalPages) {
@@ -41,7 +35,7 @@ export class Assignees extends React.PureComponent {
       <Self>
         <ClearButton
           isActive={this.props.currentAssignee === undefined}
-          onClick={() => this.loadIssuesOfAssignee(undefined)}
+          onClick={() => this.props.loadIssuesOfAssignee(undefined)}
         >
           <Text>
             Not assigned
@@ -51,7 +45,7 @@ export class Assignees extends React.PureComponent {
           <Assignee
             key={assignee.login}
             isActive={this.props.currentAssignee === assignee.login}
-            onClick={() => this.loadIssuesOfAssignee(assignee.login)}
+            onClick={() => this.props.loadIssuesOfAssignee(assignee.login)}
           >
             <UserPic src={assignee.avatar_url}/>
             <Text>
