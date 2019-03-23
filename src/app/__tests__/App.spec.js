@@ -4,7 +4,7 @@ import { mount } from 'enzyme'
 import produce from 'immer'
 import IntersectionObserver from '@researchgate/react-intersection-observer'
 
-import { App, Assignee, Issue, Loader, LoadMoreAssignees } from '../App'
+import { App, Issue, Loader, LoadMoreAssignees } from '../App'
 import { initialState } from '../reducer'
 
 jest.mock('@researchgate/react-intersection-observer')
@@ -66,7 +66,7 @@ describe('App', () => {
     render(props => {
       props.app.assignees.data = getFakeAssignees()
     })
-    expect(wrapper.find(Assignee).length).toBe(3)
+    expect(wrapper.find('Assignees Assignee').length).toBe(3)
   })
 
   it('shows issues if loaded', async () => {
@@ -102,12 +102,12 @@ describe('App', () => {
         totalPages: 2,
       }
     })
-    wrapper.find(LoadMoreAssignees).simulate('click')
+    wrapper.find('Assignees LoadMoreButton').simulate('click')
     expect(props.loadAssignees).toHaveBeenCalled()
   })
 
   it('does not show LoadMoreAssignees button if no assignees loaded', () => {
-    expect(wrapper.find(LoadMoreAssignees).exists()).toBe(false)
+    expect(wrapper.find('Assignees LoadMoreButton').exists()).toBe(false)
   })
 
   it('shows LoadMoreAssignees button if not all data is loaded', () => {
@@ -118,7 +118,7 @@ describe('App', () => {
         totalPages: 2,
       }
     })
-    expect(wrapper.find(LoadMoreAssignees).exists()).toBe(true)
+    expect(wrapper.find('Assignees LoadMoreButton').exists()).toBe(true)
   })
 
   it("does not trigger 'loadIssues' if issues if data still not loaded", () => {
@@ -176,7 +176,7 @@ describe('App', () => {
       props.app.assigneeSearchInputValue = 'g'
       props.app.assignees.data = getFakeAssignees()
     })
-    expect(wrapper.find(Assignee).length).toBe(1)
+    expect(wrapper.find('Assignees Assignee').length).toBe(1)
   })
 
   it("filters assignees by their name", () => {
@@ -184,7 +184,7 @@ describe('App', () => {
       props.app.assigneeSearchInputValue = 'g'
       props.app.assignees.data = getFakeAssignees()
     })
-    expect(wrapper.find(Assignee).length).toBe(1)
+    expect(wrapper.find('Assignees Assignee').length).toBe(1)
   })
 
   function render(producer = _ => _) {

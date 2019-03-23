@@ -1,5 +1,6 @@
 import 'normalize.css'
 import 'intersection-observer'
+import './ui/fonts.css'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'

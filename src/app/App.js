@@ -3,6 +3,7 @@ import emotion from '@emotion/styled/macro'
 import IntersectionObserver from '@researchgate/react-intersection-observer'
 
 import { SearchBar } from './SearchBar'
+import { Assignees } from './Assignees'
 
 export class App extends React.PureComponent {
   LoadMoreIssuesTrigger = () => {
@@ -46,22 +47,11 @@ export class App extends React.PureComponent {
           assigneeInputValue={app.assigneeSearchInputValue}
           changeAssigneeSearchInput={this.props.changeAssigneeSearchInput}
         />
-        <div>
-          { this.assignees.map(assignee =>
-            <Assignee
-              key={assignee.id}
-              assignee={assignee}
-            >
-              { assignee.login }
-            </Assignee>
-          )}
-          { app.assignees.data.length > 0 &&
-            app.assignees.lastLoadedPage < app.assignees.totalPages &&
-            <LoadMoreAssignees onClick={this.props.loadAssignees}>
-              <b>More</b>
-            </LoadMoreAssignees>
-          }
-        </div>
+        <Assignees
+          assignees={app.assignees}
+          assigneeSearchInputValue={app.assigneeSearchInputValue}
+          loadAssignees={this.props.loadAssignees}
+        />
         <div>
           { app.loadingError &&
             <Error>
@@ -85,14 +75,6 @@ export class App extends React.PureComponent {
     )
   }
 }
-
-export const Assignee = emotion.div`
-  
-`
-
-export const LoadMoreAssignees = emotion.div`
-  
-`
 
 export const Issue = emotion.div`
   
