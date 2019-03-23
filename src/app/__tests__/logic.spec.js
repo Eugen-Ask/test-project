@@ -39,7 +39,7 @@ describe('Business logic', () => {
         await store.dispatch(actions.loadRepository())
       } catch (e) {}
       const { app } = store.getState()
-      expect(app.loadingError).toBe('This repository is not found')
+      expect(app.loadingError).toBe('This repository is not found :(')
     })
 
     it('removes loaded issues if error occurs while loading issues', async () => {

@@ -55,6 +55,7 @@ export const appReducer = createReducer({
   [clearAssignees]: produce((state) => {
     state.assignees = initialState.assignees
     state.assigneeSearchInputValue = initialState.assigneeSearchInputValue
+    state.currentAssignee = undefined
   }),
   [issuesLoadingFailed]: produce((state, payload) => {
     state.assignees.data = []

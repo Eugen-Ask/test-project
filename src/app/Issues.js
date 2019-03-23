@@ -43,9 +43,9 @@ export class Issues extends React.PureComponent {
     return (
       <Self>
         { this.props.loadingError &&
-          <Error>
+          <OperationResult>
             { this.props.loadingError }
-          </Error>
+          </OperationResult>
         }
         <List>
           { this.props.issues.data.map(issue => (
@@ -111,8 +111,11 @@ const Time = emotion.div`
   padding-top: 5px;
 `
 
-const Error = emotion.div`
-  color: red;
+const OperationResult = emotion.div`
+  color: #5a5a5a;
+  text-align: center;
+  font-size: 36px;
+  font-family: Roboto, sans-serif;
 `
 
 const LoaderWrapper = emotion.div`

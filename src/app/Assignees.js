@@ -13,8 +13,8 @@ export class Assignees extends React.PureComponent {
     )
   }
   
-  loadIssuesOfAssignee = (assignee) => {
-    this.props.selectAssignee(assignee.login)
+  loadIssuesOfAssignee = (login) => {
+    this.props.selectAssignee(login)
     this.props.clearIssues()
     this.props.loadIssues()
   }
@@ -36,7 +36,7 @@ export class Assignees extends React.PureComponent {
           <Assignee
             key={assignee.login}
             isActive={this.props.currentAssignee === assignee.login}
-            onClick={() => this.loadIssuesOfAssignee(assignee)}
+            onClick={() => this.loadIssuesOfAssignee(assignee.login)}
           >
             <UserPic src={assignee.avatar_url}/>
             <Text>

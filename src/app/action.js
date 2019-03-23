@@ -38,7 +38,7 @@ export const loadIssues = () => async (dispatch, getState) => {
 
 function getErrorMessage(e) {
   if (e.response.status === 404) {
-    return 'This repository is not found'
+    return 'This repository is not found :('
   }
   if (e.response.data.message) {
     return e.response.data.message
