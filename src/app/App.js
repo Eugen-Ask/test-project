@@ -1,20 +1,10 @@
 import React from 'react'
 import emotion from '@emotion/styled/macro'
-import debounce from 'lodash/debounce'
 import IntersectionObserver from '@researchgate/react-intersection-observer'
 
+import { SearchBar } from './SearchBar'
+
 export class App extends React.PureComponent {
-  onChangeRepoSearchBar = (e) => {
-    this.props.changeRepoInput(e.target.value)
-    this.loadRepository()
-  }
-
-  onChangeSearchAssigneeInput = (e) => {
-    this.props.changeAssigneeSearchInput(e.target.value)
-  }
-
-  loadRepository = debounce(this.props.loadRepository, 500)
-
   LoadMoreIssuesTrigger = () => {
     const { app, loading } = this.props
     if (
@@ -49,13 +39,12 @@ export class App extends React.PureComponent {
     const { app, loading } = this.props
     return (
       <div>
-        <RepoSearchBarInput
-          value={app.repoSearchBarValue}
-          onChange={this.onChangeRepoSearchBar}
-        />
-        <SearchAssigneesInput
-          value={app.assigneeSearchInputValue}
-          onChange={this.onChangeSearchAssigneeInput}
+        <SearchBar
+          repoSearchBarValue={app.repoSearchBarValue}
+          changeRepoInput={this.props.changeRepoInput}
+          loadRepository={this.props.loadRepository}
+          assigneeInputValue={app.assigneeSearchInputValue}
+          changeAssigneeSearchInput={this.props.changeAssigneeSearchInput}
         />
         { app.loadingError &&
           <Error>
@@ -96,14 +85,6 @@ export class App extends React.PureComponent {
     )
   }
 }
-
-export const RepoSearchBarInput = emotion.input`
-  
-`
-
-export const SearchAssigneesInput = emotion.input`
-  
-`
 
 export const Assignee = emotion.div`
   

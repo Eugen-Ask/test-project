@@ -4,7 +4,7 @@ import { mount } from 'enzyme'
 import produce from 'immer'
 import IntersectionObserver from '@researchgate/react-intersection-observer'
 
-import { App, Assignee, Issue, Loader, LoadMoreAssignees, RepoSearchBarInput } from '../App'
+import { App, Assignee, Issue, Loader, LoadMoreAssignees } from '../App'
 import { initialState } from '../reducer'
 
 jest.mock('@researchgate/react-intersection-observer')
@@ -39,21 +39,27 @@ describe('App', () => {
   
   it('renders without crashing', () => {})
   
-  it('calls "changeRepoInput" when changing repo input', () => {
-    changeInput($repoInput(), 'facebook/react')
-    expect(props.changeRepoInput).toHaveBeenCalledWith('facebook/react')
-  })
-
-  it ('calls "loadRepository" on 500 ms after last change of repo input', () => {
-    changeInput($repoInput(), 'facebook/react')
-
-    expect(props.loadRepository).not.toHaveBeenCalled()
-
-    jest.advanceTimersByTime(499)
-    expect(props.loadRepository).not.toHaveBeenCalled()
-
-    jest.advanceTimersByTime(500)
-    expect(props.loadRepository).toHaveBeenCalled()
+  describe('SearchBar', () => {
+    describe('RepoInput', () => {
+      it('calls "changeRepoInput" when changing repo input', () => {
+        const input = wrapper.find('SearchBar RepoInputWrapper Input')
+        changeInput(input, 'facebook/react')
+        expect(props.changeRepoInput).toHaveBeenCalledWith('facebook/react')
+      })
+    
+      it ('calls "loadRepository" on 500 ms after last change of repo input', () => {
+        const input = wrapper.find('SearchBar RepoInputWrapper Input')
+        changeInput(input, 'facebook/react')
+    
+        expect(props.loadRepository).not.toHaveBeenCalled()
+    
+        jest.advanceTimersByTime(499)
+        expect(props.loadRepository).not.toHaveBeenCalled()
+    
+        jest.advanceTimersByTime(500)
+        expect(props.loadRepository).toHaveBeenCalled()
+      })
+    })
   })
 
   it('shows assignees if loaded', async () => {
@@ -185,10 +191,6 @@ describe('App', () => {
     props = produce(props, producer)
     wrapper = mount(<App {...props}/>)
   }
-  
-  function $repoInput() {
-    return wrapper.find(RepoSearchBarInput)
-  }
 })
 
 function getFakeAssignees() { 
@@ -205,10 +207,6 @@ function getFakeIssues() {
     { id: 2 },
     { id: 3 },
   ]
-}
-
-function getValue(inputWrapper) { 
-  return inputWrapper.props().value
 }
 
 function changeInput(inputWrapper, value) {
