@@ -4,12 +4,16 @@ import * as actions from '../action'
 import { createStore } from '../../system/store'
 import * as githubApiRequests from '../../resources/github'
 
-describe('Business logic', () => {
+describe('App state', () => {
   let store
   
   beforeEach(() => {
     store = createStore()
     store.dispatch(actions.changeRepoInput('facebook/react'))
+  })
+
+  afterEach(() => {
+    jest.restoreAllMocks()
   })
 
   describe('Repository', () => {
