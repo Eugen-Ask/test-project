@@ -22,9 +22,7 @@ export const loadAssignees = () => async (dispatch, getState) => {
     const response = await requestAssignees(repoSearchBarValue, lastLoadedPage + 1)
     dispatch(assigneesHasLoaded(response))
   } catch (e) {
-    const message = e.response.status === 404
-      ? 'This repository is not found'
-      : 'Something went wrong'
+    const message = getErrorMessage(e)
     dispatch(issuesLoadingFailed(message))
   }
 }
@@ -33,4 +31,14 @@ export const loadIssues = () => async (dispatch, getState) => {
   const { repoSearchBarValue, issues: { lastLoadedPage = 0 } } = getState().app
   const response = await requestIssues(repoSearchBarValue, undefined, lastLoadedPage + 1)
   dispatch(issuesHasLoaded(response))
+}
+
+function getErrorMessage(e) {
+  if (e.response.status === 404) {
+    return 'This repository is not found'
+  }
+  if (e.response.data.message) {
+    return e.response.data.message
+  }
+  return 'Something went wrong'
 }

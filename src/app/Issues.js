@@ -28,6 +28,17 @@ export class Issues extends React.PureComponent {
     return null
   }
   
+  Loader = () => {
+    const { loading } = this.props
+    return (
+      <LoaderWrapper>
+        {(loading.loadRepository || loading.loadIssues) && 
+          <Loader/>
+        }
+      </LoaderWrapper>
+    )
+  }
+  
   render() {
     return (
       <Self>
@@ -54,9 +65,7 @@ export class Issues extends React.PureComponent {
           ))}
           <this.LoadMoreIssuesTrigger/>
         </List>
-        { (this.props.loading.loadRepository || this.props.loading.loadIssues) &&
-          <Loader/>
-        }
+        <this.Loader/>
       </Self>
     )
   }
@@ -64,7 +73,7 @@ export class Issues extends React.PureComponent {
 
 const Self = emotion.div`
   border-top: 1px solid ${colors.greyLight};
-  padding: 20px;
+  padding: 40px 20px 0;
 `
 
 const List = emotion.div`
@@ -104,6 +113,13 @@ const Time = emotion.div`
 
 const Error = emotion.div`
   color: red;
+`
+
+const LoaderWrapper = emotion.div`
+  display: flex;
+  justify-content: center;
+  height: 100px;
+  padding-top: 30px;
 `
 
 const Loader = emotion(LoadingIcon)`
