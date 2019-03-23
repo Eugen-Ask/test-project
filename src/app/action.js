@@ -6,13 +6,15 @@ export const changeRepoInput = createAction('App:changeRepoInput')
 export const changeAssigneeSearchInput = createAction('App:changeAssigneeSearchInput')
 export const assigneesHasLoaded = createAction('App:assigneesHasLoaded')
 export const issuesHasLoaded = createAction('App:issuesHasLoaded')
-export const clearLoadedData = createAction('App:clearLoadedData')
+export const clearIssues = createAction('App:clearIssues')
+export const clearAssignees = createAction('App:clearAssignees')
 export const issuesLoadingFailed = createAction('App:issuesLoadingFailed')
 export const selectAssignee = createAction('App:selectAssignee')
 
 export const loadRepository = () => async (dispatch, getState) => {
   const { app } = getState()
-  dispatch(clearLoadedData())
+  dispatch(clearIssues())
+  dispatch(clearAssignees())
   dispatch(loadAssignees(app.repoSearchBarValue))
   return await dispatch(loadIssues(app.repoSearchBarValue))
 }

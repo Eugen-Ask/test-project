@@ -15,6 +15,8 @@ export class Assignees extends React.PureComponent {
   
   loadIssuesOfAssignee = (assignee) => {
     this.props.selectAssignee(assignee.login)
+    this.props.clearIssues()
+    this.props.loadIssues()
   }
   
   render() {

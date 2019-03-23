@@ -6,7 +6,8 @@ import {
   changeAssigneeSearchInput,
   selectAssignee,
   changeRepoInput,
-  clearLoadedData,
+  clearIssues,
+  clearAssignees,
   issuesHasLoaded,
   issuesLoadingFailed,
 } from './action'
@@ -47,10 +48,12 @@ export const appReducer = createReducer({
     state.issues.lastLoadedPage = currentPage
     state.issues.totalPages = totalPages
   }),
-  [clearLoadedData]: produce((state) => {
-    state.assignees = initialState.assignees
+  [clearIssues]: produce((state) => {
     state.issues = initialState.issues
     state.loadingError = initialState.loadingError
+  }),
+  [clearAssignees]: produce((state) => {
+    state.assignees = initialState.assignees
     state.assigneeSearchInputValue = initialState.assigneeSearchInputValue
   }),
   [issuesLoadingFailed]: produce((state, payload) => {

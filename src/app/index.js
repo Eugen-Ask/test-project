@@ -8,7 +8,9 @@ import {
   selectAssignee,
   loadRepository,
   loadAssignees,
-  loadIssues,
+  loadIssues, 
+  clearIssues, 
+  clearAssignees,
 } from './action'
 import { withActionLoadingIndicators } from '../lib/withActionLoadingIndicators'
 
@@ -23,6 +25,8 @@ export const actions = {
   loadRepository,
   loadAssignees,
   loadIssues,
+  clearIssues,
+  clearAssignees,
 }
 
 const enhance = compose(
