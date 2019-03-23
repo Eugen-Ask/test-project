@@ -1,23 +1,33 @@
 import React from 'react'
 import emotion from '@emotion/styled/macro'
 
-import { colors } from '../../ui/theme'
-import { ReactComponent as LoadingIcon } from '../../ui/icons/loading.svg'
+import { colors } from '../../../ui/theme'
+import { ReactComponent as LoadingIcon } from '../../../ui/icons/loading.svg'
+import { LoadingPlaceholder } from './LoadingPlaceholder'
 
 export class Assignees extends React.PureComponent {
+  Placeholder = () => {
+    const { loading, assignees } = this.props
+    if (assignees.data.length === 0 && (loading.repository || loading.assignees)) {
+      return <LoadingPlaceholder/>
+    }
+    return null
+  }
+    
   render() {
-    if (!this.props.assignees.data.length) return null
-
     return (
       <Self>
-        <ClearButton
-          isActive={this.props.currentAssignee === undefined}
-          onClick={() => this.props.loadIssuesOfAssignee(undefined)}
-        >
-          <Text>
-            Not assigned
-          </Text>
-        </ClearButton>
+        <this.Placeholder/>
+        { this.props.assignees.data.length > 0 &&
+          <ClearButton
+            isActive={this.props.currentAssignee === undefined}
+            onClick={() => this.props.loadIssuesOfAssignee(undefined)}
+          >
+            <Text>
+              Not assigned
+            </Text>
+          </ClearButton>
+        }
         { this.assignees.map(assignee => (
           <Assignee
             key={assignee.login}
@@ -66,9 +76,7 @@ const Self = emotion.div`
   display: flex;
   flex-wrap: wrap;
   padding: 0 5px;
-  &:empty {
-    padding: 0;
-  }
+  min-height: 36px;
 `
 
 const Item = emotion.div`
