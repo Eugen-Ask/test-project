@@ -4,6 +4,7 @@ import produce from 'immer'
 import {
   assigneesHasLoaded,
   changeAssigneeSearchInput,
+  selectAssignee,
   changeRepoInput,
   clearLoadedData,
   issuesHasLoaded,
@@ -14,6 +15,7 @@ export const initialState = {
   repoSearchBarValue: '',
   assigneeSearchInputValue: '',
   loadingError: '',
+  currentAssignee: undefined,
   assignees: {
     data: [],
     lastLoadedPage: undefined,
@@ -54,5 +56,8 @@ export const appReducer = createReducer({
   [issuesLoadingFailed]: produce((state, payload) => {
     state.assignees.data = []
     state.loadingError = payload
+  }),
+  [selectAssignee]: produce((state, assignee) => {
+    state.currentAssignee = assignee
   }),
 }, initialState)

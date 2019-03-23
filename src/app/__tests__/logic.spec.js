@@ -12,7 +12,7 @@ describe('Business logic', () => {
     store.dispatch(actions.changeRepoInput('facebook/react'))
   })
 
-  describe('Repository loading', () => {
+  describe('Repository', () => {
     it('calls loading assignees', async () => {
       const requestAssignees = jest.spyOn(githubApiRequests, 'requestAssignees')
       await store.dispatch(actions.loadRepository())
@@ -55,7 +55,7 @@ describe('Business logic', () => {
     })
   })
   
-  describe('Assignees loading', () => {
+  describe('Assignees', () => {
     it('loads assignees', async () => {
       await store.dispatch(actions.loadAssignees())
       const { app } = store.getState()
@@ -72,7 +72,7 @@ describe('Business logic', () => {
     })
   })
 
-  describe('Issues loading', () => {
+  describe('Issues', () => {
     it('loads issues', async () => {
       await store.dispatch(actions.loadIssues())
       const { app } = store.getState()

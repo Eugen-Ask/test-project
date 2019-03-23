@@ -8,6 +8,7 @@ export const assigneesHasLoaded = createAction('App:assigneesHasLoaded')
 export const issuesHasLoaded = createAction('App:issuesHasLoaded')
 export const clearLoadedData = createAction('App:clearLoadedData')
 export const issuesLoadingFailed = createAction('App:issuesLoadingFailed')
+export const selectAssignee = createAction('App:selectAssignee')
 
 export const loadRepository = () => async (dispatch, getState) => {
   const { app } = getState()
@@ -28,8 +29,8 @@ export const loadAssignees = () => async (dispatch, getState) => {
 }
 
 export const loadIssues = () => async (dispatch, getState) => {
-  const { repoSearchBarValue, issues: { lastLoadedPage = 0 } } = getState().app
-  const response = await requestIssues(repoSearchBarValue, undefined, lastLoadedPage + 1)
+  const { repoSearchBarValue, currentAssignee, issues: { lastLoadedPage = 0 } } = getState().app
+  const response = await requestIssues(repoSearchBarValue, currentAssignee, lastLoadedPage + 1)
   dispatch(issuesHasLoaded(response))
 }
 

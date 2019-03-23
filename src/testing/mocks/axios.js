@@ -3,6 +3,14 @@ jest.mock('axios', () => {
     create: () => ({
       get(path, {params: {assignee, page = 1}}) {
         if (path === `/repos/facebook/react/issues`) {
+          if (assignee === 'gaearon') {
+            return {
+              data: Array.from(Array(4), issueFake),
+              headers: {
+                link: githubResponseLinksMock(page, 1)
+              }
+            }
+          }
           return {
             data: Array.from(Array(30), issueFake),
             headers: {
