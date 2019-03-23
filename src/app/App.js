@@ -24,6 +24,7 @@ export class App extends React.PureComponent {
           selectAssignee={this.props.selectAssignee}
           loadIssues={this.props.loadIssues}
           clearIssues={this.props.clearIssues}
+          loading={this.props.loading}
         />
         <Issues
           issues={app.issues}

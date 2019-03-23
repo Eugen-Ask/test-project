@@ -2,6 +2,7 @@ import React from 'react'
 import emotion from '@emotion/styled/macro'
 
 import { colors } from '../ui/theme'
+import { ReactComponent as LoadingIcon } from '../ui/icons/loading.svg'
 
 export class Assignees extends React.PureComponent {
   get assignees() {
@@ -17,6 +18,20 @@ export class Assignees extends React.PureComponent {
     this.props.selectAssignee(login)
     this.props.clearIssues()
     this.props.loadIssues()
+  }
+  
+  LoadMoreButton = () => {
+    const { data, lastLoadedPage, totalPages } = this.props.assignees
+    if (data.length > 0 && lastLoadedPage < totalPages) {
+      return (
+        <LoadMoreButton onClick={this.props.loadAssignees}>
+          <Text>
+            <b>More</b>
+          </Text>
+        </LoadMoreButton>
+      )
+    }
+    return null
   }
   
   render() {
@@ -44,13 +59,9 @@ export class Assignees extends React.PureComponent {
             </Text>
           </Assignee>
         ))}
-        { this.props.assignees.data.length > 0 && 
-          this.props.assignees.lastLoadedPage < this.props.assignees.totalPages &&
-          <LoadMoreButton onClick={this.props.loadAssignees}>
-            <Text>
-              <b>More</b>
-            </Text>
-          </LoadMoreButton>
+        { this.props.loading.loadAssignees 
+          ? <Loading/>
+          : <this.LoadMoreButton/>
         }
       </Self>
     )
@@ -95,4 +106,9 @@ const UserPic = emotion.img`
   height: 24px;
   width: 24px;
   border-radius: 50%;
+`
+const Loading = emotion(LoadingIcon)`
+  height: 24px;
+  width: 34px;
+  stroke: #e0e0e0;
 `
