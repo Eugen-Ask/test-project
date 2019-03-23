@@ -87,5 +87,11 @@ describe('Business logic', () => {
       expect(app.issues.data.length).toBe(60)
       expect(app.issues.lastLoadedPage).toBe(2)
     })
+    it('loads issues of selected assignee', async () => {
+      store.dispatch(actions.selectAssignee('gaearon'))
+      await store.dispatch(actions.loadIssues())
+      const { app } = store.getState()
+      expect(app.issues.data.length).toBe(4)
+    })
   })
 })
