@@ -71,7 +71,6 @@ export const appReducer = createReducer({
   }),
   
   [selectAssignee]: produce((state, assignee) => {
-    state.assigneeSearchInputValue = initialState.assigneeSearchInputValue
     state.currentAssignee = assignee
   }),
 }, initialState)

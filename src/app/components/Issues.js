@@ -8,55 +8,13 @@ import { ReactComponent as IssueIcon } from '../../ui/icons/issue.svg'
 import { ReactComponent as LoadingIcon } from '../../ui/icons/loading.svg'
 
 export class Issues extends React.PureComponent {
-  LoadMoreIssuesTrigger = () => {
-    const { issues, loading } = this.props
-    if (
-      issues.data.length > 0
-      && issues.lastLoadedPage < issues.totalPages
-      && !loading.loadMoreIssues
-      && !loading.loadRepository
-    ){
-      return (
-        <IntersectionObserver
-          children={<div/>}
-          onChange={({ isIntersecting }) => {
-            if (isIntersecting) this.props.loadMoreIssues()
-          }}
-        />
-      )
-    }
-    return null
-  }
-  
-  Loader = () => {
-    const { loading } = this.props
-    if (loading.loadRepository 
-      || loading.loadMoreIssues 
-      || loading.loadIssuesOfAssignee) {
-      return <Loader/>
-    }
-    return null
-  }
-  
-  EmptyState = () => {
-    const { data, pristine } = this.props.issues
-    if (pristine || data.length > 0) return null
-    return (
-      <OperationResult>
-        ¯\_(ツ)_/¯
-        <br/>
-        Nothing here 
-      </OperationResult>
-    )
-  }
-  
   render() {
     return (
       <Self>
         { this.props.loadingError &&
-          <OperationResult>
-            { this.props.loadingError }
-          </OperationResult>
+        <OperationResult>
+          { this.props.loadingError }
+        </OperationResult>
         }
         <this.EmptyState/>
         <List>
@@ -81,6 +39,48 @@ export class Issues extends React.PureComponent {
           <this.Loader/>
         </LoaderWrapper>
       </Self>
+    )
+  }
+
+  LoadMoreIssuesTrigger = () => {
+    const { issues, loading } = this.props
+    if (
+      issues.data.length > 0
+      && issues.lastLoadedPage < issues.totalPages
+      && !loading.loadMoreIssues
+      && !loading.loadRepository
+    ){
+      return (
+        <IntersectionObserver
+          children={<div/>}
+          onChange={({ isIntersecting }) => {
+            if (isIntersecting) this.props.loadMoreIssues()
+          }}
+        />
+      )
+    }
+    return null
+  }
+
+  Loader = () => {
+    const { loading } = this.props
+    if (loading.loadRepository 
+      || loading.loadMoreIssues 
+      || loading.loadIssuesOfAssignee) {
+      return <Loader/>
+    }
+    return null
+  }
+  
+  EmptyState = () => {
+    const { data, pristine } = this.props.issues
+    if (pristine || data.length > 0) return null
+    return (
+      <OperationResult>
+        ¯\_(ツ)_/¯
+        <br/>
+        Nothing here 
+      </OperationResult>
     )
   }
 }

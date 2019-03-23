@@ -5,32 +5,9 @@ import { colors } from '../../ui/theme'
 import { ReactComponent as LoadingIcon } from '../../ui/icons/loading.svg'
 
 export class Assignees extends React.PureComponent {
-  get assignees() {
-    const { assignees, assigneeSearchInputValue } = this.props
-    return assignees.data.filter(
-      _ => _.login
-        .toLowerCase()
-        .startsWith(assigneeSearchInputValue.toLowerCase())
-    )
-  }
-  
-  LoadMoreButton = () => {
-    const { data, lastLoadedPage, totalPages } = this.props.assignees
-    if (data.length > 0 && lastLoadedPage < totalPages) {
-      return (
-        <LoadMoreButton onClick={this.props.loadMoreAssignees}>
-          <Text>
-            <b>More</b>
-          </Text>
-        </LoadMoreButton>
-      )
-    }
-    return null
-  }
-  
   render() {
     if (!this.props.assignees.data.length) return null
-    
+
     return (
       <Self>
         <ClearButton
@@ -53,12 +30,35 @@ export class Assignees extends React.PureComponent {
             </Text>
           </Assignee>
         ))}
-        { this.props.loading.loadMoreAssignees 
+        { this.props.loading.loadMoreAssignees
           ? <Loading/>
           : <this.LoadMoreButton/>
         }
       </Self>
     )
+  }
+
+  get assignees() {
+    const { assignees, assigneeSearchInputValue } = this.props
+    return assignees.data.filter(
+      _ => _.login
+        .toLowerCase()
+        .startsWith(assigneeSearchInputValue.toLowerCase())
+    )
+  }
+  
+  LoadMoreButton = () => {
+    const { data, lastLoadedPage, totalPages } = this.props.assignees
+    if (data.length > 0 && lastLoadedPage < totalPages) {
+      return (
+        <LoadMoreButton onClick={this.props.loadMoreAssignees}>
+          <Text>
+            <b>More</b>
+          </Text>
+        </LoadMoreButton>
+      )
+    }
+    return null
   }
 }
 

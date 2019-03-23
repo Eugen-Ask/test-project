@@ -5,19 +5,12 @@ import debounce from 'lodash/debounce'
 import { colors } from '../../ui/theme'
 
 export class SearchBar extends React.PureComponent {
-  onChangeRepoSearchBar = (e) => {
-    this.props.changeRepoInput(e.target.value)
-    this.loadRepository()
-  }
-
-  loadRepository = debounce(this.props.loadRepository, 1000)
-  
   render() {
     return (
       <Self>
         <RepoInputWrapper>
           https://github.com/
-          <Input 
+          <Input
             autoFocus
             value={this.props.repoSearchBarValue}
             onChange={this.onChangeRepoSearchBar}
@@ -26,6 +19,7 @@ export class SearchBar extends React.PureComponent {
         </RepoInputWrapper>
         <AssigneeInputWrapper>
           <Input
+            type="search"
             value={this.props.assigneeInputValue}
             onChange={(e) => this.props.changeAssigneeSearchInput(e.target.value)}
             placeholder="Search assignee"
@@ -34,6 +28,13 @@ export class SearchBar extends React.PureComponent {
       </Self>
     )
   }
+
+  onChangeRepoSearchBar = (e) => {
+    this.props.changeRepoInput(e.target.value)
+    this.loadRepository()
+  }
+  
+  loadRepository = debounce(this.props.loadRepository, 1000)
 }
 
 const Self = emotion.div`
