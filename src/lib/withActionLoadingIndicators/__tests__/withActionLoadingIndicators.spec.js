@@ -1,7 +1,7 @@
 import React from 'react'
 import { mount } from 'enzyme'
 
-import '../../testing/setupTestingEnvironment'
+import '../../../testing/setupTestingEnvironment'
 import { withActionLoadingIndicators } from './'
 
 describe('withActionLoadingIndicators', () => {
