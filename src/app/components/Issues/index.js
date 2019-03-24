@@ -1,11 +1,10 @@
 import React from 'react'
-import TimeAgo from 'react-timeago'
 import emotion from '@emotion/styled/macro'
 import IntersectionObserver from '@researchgate/react-intersection-observer'
 
-import { colors } from '../../ui/theme'
-import { ReactComponent as IssueIcon } from '../../ui/icons/issue.svg'
-import { ReactComponent as LoadingIcon } from '../../ui/icons/loading.svg'
+import { ReactComponent as LoadingIcon } from '../../../ui/icons/loading.svg'
+import { colors } from '../../../ui/theme'
+import { Issue } from './Issue'
 
 export class Issues extends React.PureComponent {
   render() {
@@ -18,21 +17,9 @@ export class Issues extends React.PureComponent {
         }
         <this.EmptyState/>
         <List>
-          { this.props.issues.data.map(issue => (
-            <Issue key={issue.id}>
-              <IconWrapper>
-                <IssueIcon/>
-              </IconWrapper>
-              <div>
-                <Title href={issue.html_url} target="_blank">
-                  {issue.title}
-                </Title>
-                <Time>
-                  Opened <TimeAgo date={issue.created_at} />
-                </Time>
-              </div>
-            </Issue>
-          ))}
+          { this.props.issues.data.map(issue =>
+            <Issue key={issue.id} issue={issue}/>
+          )}
           <this.LoadMoreIssuesTrigger/>
         </List>
         <LoaderWrapper>
@@ -98,31 +85,6 @@ const List = emotion.div`
   &:empty {
     display: none;
   }
-`
-
-const Issue = emotion.div`
-  padding: 15px;
-  display: flex;
-  font-family: 'Roboto', sans-serif;
-  &:not(:first-child) {
-    border-top: 1px solid ${colors.greyLight};
-  }
-`
-
-const IconWrapper = emotion.div`
-  padding-right: 10px;
-`
-
-const Title = emotion.a`
-  color: ${colors.textPrimary};
-  text-decoration: none !important;
-  font-weight: 700;
-`
-
-const Time = emotion.div`
-  font-size: 12px;
-  color: #586069;
-  padding-top: 5px;
 `
 
 const OperationResult = emotion.div`
