@@ -33,26 +33,12 @@ export const actions = {
 
 const enhance = compose(
   connect(mapStateToProps, actions),
-  withActionLoadingIndicators(
-    props => ({
-      loadRepository: { 
-        action: props.loadRepository, 
-        indicatorName: 'repository' 
-      },
-      loadMoreIssues: { 
-        action: props.loadMoreIssues, 
-        indicatorName: 'issues' 
-      },
-      loadMoreAssignees: { 
-        action: props.loadMoreAssignees, 
-        indicatorName: 'assignees' 
-      },
-      loadIssuesOfAssignee: { 
-        action: props.loadIssuesOfAssignee, 
-        indicatorName: 'issuesOfAssignee' 
-      },
-    }),
-  ),
+  withActionLoadingIndicators({
+    loadRepository: 'repository',
+    loadMoreIssues: 'issues',
+    loadMoreAssignees: 'assignees',
+    loadIssuesOfAssignee: 'issuesOfAssignee',
+  }),
 )
 
 export const App = enhance(AppComponent)
