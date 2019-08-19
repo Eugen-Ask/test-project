@@ -6,3 +6,5 @@ The interface should be able to:
 * The filtering of issues should work with API, i. e. The solution to load all the issues and filter them on the client side is not allowed.
 * Any other features can be added on your own.
 * In addition, it needs to create a mechanism for displaying a loading indicator for every action and every component
+
+Demo: https://test-a6317e5d1.herokuapp.com/
