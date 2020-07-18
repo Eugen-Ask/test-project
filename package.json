@@ -10,7 +10,7 @@
     "enzyme": "^3.9.0",
     "enzyme-adapter-react-16": "^1.11.2",
     "intersection-observer": "^0.5.1",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.19",
     "normalize.css": "^8.0.1",
     "parse-link-header": "^1.0.1",
     "react": "^16.8.4",
